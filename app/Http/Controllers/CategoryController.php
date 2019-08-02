@@ -42,12 +42,12 @@ class CategoryController extends Controller
         ]);
       $category = Category::create($request->all());
       if($request->has('eliminate') && $request->input('eliminate') > 1) {
-        if(\App\Criterion::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()) {
+        if(\App\Subcategory::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()) {
           return redirect()->back();
         }
-        \App\Criterion::create(['category_id' => $category->id, 'name' => 'Final', 'type' => 'final']);
+        \App\Subcategory::create(['category_id' => $category->id, 'name' => 'Final', 'type' => 'final']);
       } else {
-        \App\Criterion::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()->delete();
+        \App\Subcategory::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()->delete();
       }
       return redirect()->back();
     }
@@ -95,12 +95,12 @@ class CategoryController extends Controller
       $category = Category::find($id);
       $category->update($request->all());
       if($request->has('eliminate') && $request->input('eliminate') > 1) {
-        if(\App\Criterion::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()) {
+        if(\App\Subcategory::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()) {
           return redirect()->back();
         }
-        \App\Criterion::create(['category_id' => $category->id, 'name' => 'Final', 'type' => 'final']);
+        \App\Subcategory::create(['category_id' => $category->id, 'name' => 'Final', 'type' => 'final']);
       } else {
-        \App\Criterion::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()->delete();
+        \App\Subcategory::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()->delete();
       }
       return redirect()->back();
     }

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Criterion;
+use App\Subcategory;
 
-class CriterionController extends Controller
+class SubcategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,7 +41,7 @@ class CriterionController extends Controller
         'weight' => 'required|string|numeric',
         'type' => 'nullable|string|in:final',
       ]);
-      Criterion::create($request->all());
+      Subcategory::create($request->all());
       return redirect()->back();
     }
 
@@ -77,7 +77,7 @@ class CriterionController extends Controller
     public function update(Request $request, $id)
     {
       if($request->has('delete')) {
-        Criterion::find($id)->delete();
+        Subcategory::find($id)->delete();
         return redirect()->back();
       }
       $request->validate([
@@ -85,10 +85,10 @@ class CriterionController extends Controller
         'name' => 'required|string|min:3',
         'type' => 'nullable|string|in:final',
       ]);
-      if(Criterion::find($id)->type != 'final') {
+      if(Subcategory::find($id)->type != 'final') {
         $request->validate(['weight' => 'required|string|numeric']);
       }
-      Criterion::find($id)->update($request->all());
+      Subcategory::find($id)->update($request->all());
       return redirect()->back();
     }
 

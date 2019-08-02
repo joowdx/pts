@@ -13,7 +13,7 @@ class JudgeController extends Controller {
 
   public function store(Request $request) {
     if($request->has('generate')) {
-      if($request->input('generate_count') == null) {
+      if($request->input('generate_count') == null || $request->input('generate_count') == 0) {
         return redirect()->back();
       }
       $count = 0;
@@ -26,9 +26,9 @@ class JudgeController extends Controller {
       return redirect()->back();
     }
     $request->validate([
-      'category_id' => 'required|array|min:1',
+      'category_id' => 'nullable|array|min:1',
       'name' => 'required|string',
-      'number' => 'required|string|unique:judges',
+      'number' => 'required|string|numeric',
       'pin' => 'nullable|string|numeric|min:6|max:6',
       'token' => 'nullable|string|min:12|max:12',
     ]);
@@ -45,7 +45,8 @@ class JudgeController extends Controller {
     $request->validate([
       'category_id' => 'required|array|min:1',
       'name' => 'required|string',
-      'number' => 'required|string|unique:judges,number,'.$request->input('number'),
+      'number' => 'required|string|numeric',
+      'pin' => 'nullable|string|min:6|max:6',
       'token' => 'nullable|string|min:12|max:12',
     ]);
     $update = Judge::find($id)->update($request->except('category_id'));
