@@ -1,0 +1,168 @@
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap.scss';
+
+// FontAwesome
+@import "~font-awesome/css/all.css";
+
+// Admin LTE
+@import "~admin-lte/dist/css/adminlte.min.css";
+
+// Other Plugins
+@import '~sweetalert2/dist/sweetalert2.min.css';
+@import '~bootstrap-select/sass/bootstrap-select.scss';
+@import "~datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+@import "~icheck-bootstrap/icheck-bootstrap.min.css";
+@import "~toastr/toastr.scss";
+@import "~animate.css/animate.css";
+
+// Custom
+
+:root, html, body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji", "FontAwesome";
+}
+
+body {
+  padding: 0 !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #ecf0f1;
+  background: $danger !important;
+}
+
+a.brand-link {
+  outline: 0;
+  border: none !important;
+}
+
+div.input-group-append {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+a:active, a:focus {
+  outline: 0;
+  border: none;
+}
+
+#crumbs {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  ul {
+    margin-bottom: 0;
+    list-style: none;
+    display: inline-table;
+    li {
+      display: inline;
+      a {
+        display: block;
+        float: left;
+        height: 30px;
+        background: #F3F5FA;
+        text-align: center;
+        padding: 3px 15px 0 30px;
+        position: relative;
+        margin: 0 10px 0 0;
+        font-size: 1em;
+        text-decoration: none;
+        color: #8093A7;
+        &:after {
+          content: "";
+          border-top: 15px solid transparent;
+          border-bottom: 15px solid transparent;
+          border-left: 15px solid #F3F5FA;
+          position: absolute;
+          right: -15px;
+          top: 0;
+          z-index: 1;
+        }
+        &:before {
+          content: "";
+          border-top: 15px solid transparent;
+          border-bottom: 15px solid transparent;
+          border-left: 15px solid #fff;
+          position: absolute;
+          left: 0;
+          top: 0;
+        }
+        &:active, &:focus {
+          outline: 0;
+          border: none;
+        }
+      }
+    }
+  }
+}
+
+#crumbs ul li:first-child a {
+  padding-left: 20px;
+  border-top-left-radius: 5px; border-bottom-left-radius: 5px;
+}
+#crumbs ul li:first-child a:before {
+  display: none;
+}
+
+#crumbs ul li:last-child a {
+  font-weight: 500;
+  padding-right: 20px;
+  border-top-right-radius: 5px; border-bottom-right-radius: 5px;
+}
+#crumbs ul li:last-child a:after {
+  display: none;
+}
+
+#crumbs ul li a:hover {
+  background: $gray-500;
+  color: $white;
+}
+#crumbs ul li a:hover:after {
+  border-left-color: $gray-500;
+  color: $white;
+}
+
+
+
+#toast-container > div {
+  opacity: 0.8;
+  box-shadow: none;
+}
+#toast-container > div.toast:hover {
+  opacity: 1;
+  box-shadow: none;
+}
+
+.content-wrapper {
+  min-height: 100%!important;
+}
+
+
+*::placeholder {
+  color: #999999!important;
+}
+
+.bootstrap-select .btn:focus {
+  outline: none !important;
+}
+
+table {
+  width: 100%!important;
+}
+
+div.dropdown.bootstrap-select button.btn.dropdown-toggle {
+  border: 1px solid #ced4da;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+.dropdown-menu {
+  z-index: 900!important;
+}
