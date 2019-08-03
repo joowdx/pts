@@ -18,8 +18,7 @@ class CreateApplicationTable extends Migration
             $table->bigIncrements('id');
             $table->string('key', 20)->unique();
             $table->text('value');
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
+            $table->timestamps();
         });
         Application::create([
             'key' => 'APP NAME',
