@@ -108,7 +108,7 @@
             </form>
           @empty
             <tr>
-              <td>
+              <td colspan="4" class="text-center">
                 No Contestants
               </td>
             </tr>
