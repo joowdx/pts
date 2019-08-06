@@ -36,7 +36,7 @@ class ContestantController extends Controller
     public function store(Request $request)
     {
       $request->validate([
-        'event_id' => 'required|array|min:1',
+        'category_id' => 'required|string|min:1',
         'name' => 'required|string|min:3',
       ]);
       Contestant::create($request->all());
@@ -62,7 +62,7 @@ class ContestantController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -74,7 +74,12 @@ class ContestantController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $request->validate([
+        'category_id' => 'required|string|min:1',
+        'name' => 'required|string|min:3',
+      ]);
+      Contestant::find($id)->update($request->all());
+      return redirect()->back();
     }
 
     /**

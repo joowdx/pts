@@ -141,7 +141,11 @@ class NavigationController extends Controller
       'icon' => 'far fa-hashtag',
       'value' => ucfirst(__FUNCTION__),
     ]);
-    return view(__FUNCTION__)->with('events', \App\Event::all());;
+    return view(__FUNCTION__)->with([
+      'events' => \App\Event::all(),
+      'active' => \App\Event::where('active', 1)->get()->first(),
+      'contestants' => \App\Contestant::all(),
+    ]);;
   }
 
   public function evaluation() {

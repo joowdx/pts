@@ -51,7 +51,7 @@
             </div>
             @enderror
             <div class="input-group mb-3">
-              <input id="contestant_number" type="text" class="form-control" @error('contestant_number') style="border-color: #e3342f;" @enderror name="contestant_number" autocomplete="current-contestant_number" placeholder="Cotnestant number">
+              <input id="contestant_number" type="text" class="form-control" @error('contestant_number') style="border-color: #e3342f;" @enderror name="contestant_number" autocomplete="current-contestant_number" placeholder="Contestant number">
               <div class="input-group-append input-group-text" @error('contestant_number') style="border-color: #e3342f;" @enderror>
                 <span class="fa-fw far fa-hashtag" @error('contestant_number') style="color: red" @enderror></span>
               </div>
@@ -64,8 +64,54 @@
       </div>
     </div>
   </div>
-  <div class="d-none d-md-flex col-sm-7 col-md-8 col-lg-9">
-
+  <div class="col-lg-6">
+    <h3 class="login-heading mb-3">
+      <i class="fa-fw far fa-list"></i>
+      List
+    </h3>
+    <div class="">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th width="25%"><i class="fa-fw far fa-folder-open"></i>Category</th>
+            <th width="10%"><i class="fa-fw far fa-hashtag"></i> No. </th>
+            <th width="35%"><i class="fa-fw far fa-gavel"></i> Name </th>
+            <th><i class="fa-fw far fa-ticket-alt"></i> Action </th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse ($contestants as $contestant)
+            <form action="{{ route('contestant.update', $contestant->id) }}" method="post">
+              <tr>
+                  <td hidden> @csrf </td>
+                  <td hidden> <input type="text" name="_method" value="put"> </td>
+                  <td>
+                  <select class="form-control selectpicker show-tick" name="category_id" id="category_id" title="Category" >
+                    @if($active)
+                      @foreach ($active->categories as $category)
+                        <option value="{{ $category->id }}"> {{ $category->name }} </option>
+                      @endforeach
+                    @endif
+                  </select>
+                </td>
+                <td><input type="text" class="form-control" value="{{ $contestant->number }}" name="number"></td>
+                <td><input type="text" class="form-control" value="{{ $contestant->name }}" name="name"></td>
+                <td>
+                  <div class="input-group">
+                    <div class="input-group-append">
+                      <button style="border-top-left-radius:5px!important;border-bottom-left-radius:5px!important;" type="submit" class="btn btn-danger"><i class="fa-fw far fa-pen-alt"></i>
+                      <button type="submit" class="btn btn-danger" value="delete"><i class="fa-fw far fa-trash-alt"></i>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </form>
+          @empty
+            <tr> No Contestants  </tr>
+          @endforelse
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 @endsection
