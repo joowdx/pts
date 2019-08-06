@@ -122,6 +122,7 @@ class NavigationController extends Controller
     ]);
     return view(__FUNCTION__)->with([
       'active' => \App\Event::where('active', 1)->get()->first(),
+      'judges' => \App\Judge::all(),
     ]);
   }
 

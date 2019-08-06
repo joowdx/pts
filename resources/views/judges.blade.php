@@ -91,12 +91,53 @@
       </form>
     </div>
   </div>
-  <div class="col-md-3">
-
+  <div class="col-lg-6">
+    <h3 class="login-heading mb-3">
+      <i class="fa-fw far fa-list"></i>
+      List
+    </h3>
+    <div class="table-responsive">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th width="10%"><i class="fa-fw far fa-hashtag"></i> No. </th>
+            <th width="35%"><i class="fa-fw far fa-gavel"></i> Name </th>
+            <th width="15%"><i class="fa-fw far fa-key-skeleton"></i> Pin </th>
+            <th><i class="fa-fw far fa-ticket-alt"></i> Token </th>
+            <th><i class="fa-fw far fa-ticket-alt"></i> Action </th>
+          </tr>
+        </thead>
+        <tbody>
+          @forelse ($judges as $judge)
+            <form action="{{ route('judge.update', $judge->id) }}">
+              <tr>
+                <td hidden> @csrf </td>
+                <td><input type="text" class="form-control" value="{{ $judge->number }}"></td>
+                <td><input type="text" class="form-control" value="{{ $judge->name }}"></td>
+                <td><input type="text" class="form-control" value="{{ $judge->pin }}"></td>
+                <td><input type="text" class="form-control" value="{{ $judge->token }}"></td>
+                <td>
+                  <div class="input-group">
+                    <div class="input-group-append">
+                      <button style="border-top-left-radius:5px!important;border-bottom-left-radius:5px!important;" type="submit" class="btn btn-danger"><i class="fa-fw far fa-pen-alt"></i>
+                      <button type="submit" class="btn btn-danger" value="delete"><i class="fa-fw far fa-trash-alt"></i>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </form>
+          @empty
+            <tr> No judges </tr>
+          @endforelse
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 @endsection
 
 @section('scripts')
+<script>
 
+</script>
 @endsection
