@@ -149,7 +149,7 @@
                 <tbody>
                   <tr>
                     <td>
-                      <form action="{{ route('criterion.store')}}" method="post">
+                      <form action="{{ route('subcategory.store')}}" method="post">
                         <div class="input-group">
                           @csrf
                           <input name="category_id" type="text" value="{{ $category->id }}" hidden>
@@ -166,23 +166,23 @@
                       </form>
                     </td>
                   </tr>
-                  @forelse ($category->criteria as $criterion)
+                  @forelse ($category->subcategories as $subcategory)
                     <tr>
                       <td>
-                        <form action="{{ route('criterion.update', $criterion->id)}}" method="post">
+                        <form action="{{ route('subcategory.update', $subcategory->id)}}" method="post">
                           <div class="input-group">
                             @csrf
                             <input name="_method" value="put" hidden>
                             <input name="category_id" type="text" value="{{ $category->id }}" hidden>
-                            <input name="name" class="form-control" type="text" value="{{ $criterion->name }}" style="border-top-left-radius:5px!important;border-bottom-left-radius:5px;!important" placeholder="Sub-categories">
+                            <input name="name" class="form-control" type="text" value="{{ $subcategory->name }}" style="border-top-left-radius:5px!important;border-bottom-left-radius:5px;!important" placeholder="Sub-categories">
                             @if($category->eliminate != null || $category->eliminate > 1)
-                              <input name="weight" class="form-control" type="text" value="{{ $criterion->weight }}" placeholder="Weight" @if($criterion->type) hidden @endif>
+                              <input name="weight" class="form-control" type="text" value="{{ $subcategory->weight }}" placeholder="Weight" @if($subcategory->type) hidden @endif>
                             @endif
                             <div class="input-group-append">
                               <button class="btn btn-danger" type="submit">
                                 <i class="fa-fw far fa-pen-alt"></i>
                               </button>
-                              @if($criterion->type == null)
+                              @if($subcategory->type == null)
                                 <button class="btn btn-danger" type="submit" name="delete">
                                   <i class="fa-fw far fa-trash-alt"></i>
                                 </button>

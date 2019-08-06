@@ -25,7 +25,7 @@ Route::resource('application', 'ApplicationController')->middleware(['auth']);
 Route::resource('user', 'UserController')->middleware(['auth']);
 Route::resource('event', 'EventController')->middleware(['auth']);;
 Route::resource('category', 'CategoryController')->middleware(['auth']);;
-Route::resource('criterion', 'CriterionController')->middleware(['auth']);;
+Route::resource('subcategory', 'SubcategoryController')->middleware(['auth']);;
 Route::resource('judge', 'JudgeController')->middleware(['auth']);;
 Route::resource('contestant', 'ContestantController')->middleware(['auth']);;
 

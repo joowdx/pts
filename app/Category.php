@@ -14,7 +14,11 @@ class Category extends Model
     return $this->belongsToMany(Judge::class)->withTimestamps();
   }
 
-  public function criteria() {
-    return $this->hasMany(Criterion::class);
+  public function subcategories() {
+    return $this->hasMany(Subcategory::class);
+  }
+
+  public function finalsubcategory() {
+
   }
 }
