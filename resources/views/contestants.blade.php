@@ -107,7 +107,11 @@
               </tr>
             </form>
           @empty
-            <tr> No Contestants  </tr>
+            <tr>
+              <td>
+                No Contestants
+              </td>
+            </tr>
           @endforelse
         </tbody>
       </table>
