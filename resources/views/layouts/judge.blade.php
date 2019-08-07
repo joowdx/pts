@@ -97,7 +97,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               @foreach ($active->categories as $i)
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ "/x/$judge->token/$judge->pin$$judge->id/$i->id"}}" class="nav-link">
                   <i class="nav-icon fa-fw far fa-eye"></i>
                   <p class="font-weight-normal">
                     {{ $i->name }}
@@ -111,24 +111,40 @@
         </div>
       </aside>
       <div class="content-wrapper">
-        <div class="content-header">
-          <div class="container-fluid">
-            <div class="row mb-2">
-              <div class="col-2">
-                {{-- <h3> {{ $active->name }} </h3> --}}
-              </div>
-              {{-- @component('components.breadcrumbs') --}}
+          <div class="content-header">
+            <div class="container-fluid">
+              <div class="row mb-2">
+                <div class="col-2">
+                  <h3> {{ Navigation::url() }} </h3>
+                </div>
+                {{-- @component('components.breadcrumbs') --}}
 
-              {{-- @endcomponent --}}
-              <div class="col-10 d-none d-sm-block ml-0">
-                <div id="crumbs" class="d-flex justify-content-end">
-                  <ul>
-                  </ul>
+                {{-- @endcomponent --}}
+                <div class="col-10 d-none d-sm-block ml-0">
+                  <div id="crumbs" class="d-flex justify-content-end">
+                    <ul>
+                      @if(Navigation::crumbs())
+                      <li>
+                        <a href="{{ url('/') }}">
+                          <i class="fa fa-home" aria-hidden="true"></i>
+                          Home
+                        </a>
+                      </li>
+                      @foreach (Navigation::crumbs() as $crumb)
+                      <li>
+                        <a href="{{ $crumb->link && !$loop->last ? $crumb->link : 'javascript:void(0)' }}" {{ $loop->last ? 'class=bg-danger' : '' }}>
+                          <i class="{{ $crumb->icon }}" aria-hidden="true"></i>
+                          {{ $crumb->value }}
+                        </a>
+                      </li>
+                      @endforeach
+                      @endif
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         <div class="content">
           <div class="container-fluid">
             @yield('content')

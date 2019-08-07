@@ -87,7 +87,7 @@ class ContestantController extends Controller
     public function update(Request $request, $id)
     {
       $request->validate([
-        'category_id' => 'nullable|array|min:1',
+        'category_id' => 'nullable|string|min:1',
         'name' => 'required|string',
         'number' => 'required|string|numeric',
       ]);

@@ -207,9 +207,15 @@ class NavigationController extends Controller
     if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
       return redirect('/x');
     } else {
+      NavigationController::set('asdasdas', [
+        'link' => false,
+        'icon' => 'far fa-hashtag',
+        'value' => ucfirst('assads'),
+      ]);
       return view('judge.judge')->with([
         'active' => \App\Event::where('active', 1)->get()->first(),
         'judge' => $judge,
+        'contestants' => \App\Contestant::all()->sortBy('number'),
       ]);
     }
   }
@@ -218,10 +224,21 @@ class NavigationController extends Controller
     $judge = \App\Judge::find(@explode('$',$j)[1]);
     if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
       return redirect('/x');
+    } else if(\App\Category::find($c) == null) {
+      return redirect("/x/$t/$j");
     } else {
-      return view('judge.judge')->with([
+      $category = \App\Category::find($c);
+      NavigationController::set($category->name, [
+        'link' => false,
+        'icon' => 'far fa-star',
+        'value' => ucfirst($category->name),
+      ]);
+      return view('judge.category')->with([
         'active' => \App\Event::where('active', 1)->get()->first(),
         'judge' => $judge,
+        'contestants' => \App\Contestant::all()->sortBy('number'),
+        'category' => \App\Category::find($c),
+        'final' => \App\Subcategory::where(['type' => 'final', 'category_id' => $c])->get()->first(),
       ]);
     }
   }
