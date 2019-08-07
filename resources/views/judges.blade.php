@@ -2,7 +2,14 @@
 
 @section('styles')
 <style>
-
+  .table-borderless > tbody > tr > td,
+  .table-borderless > tbody > tr > th,
+  .table-borderless > tfoot > tr > td,
+  .table-borderless > tfoot > tr > th,
+  .table-borderless > thead > tr > td,
+  .table-borderless > thead > tr > th {
+    border: none;
+  }
 </style>
 @endsection
 
@@ -12,7 +19,7 @@
     <div class="mb-4">
       <h3 class="login-heading mb-3">
         <i class="fa-fw far fa-plus-circle"></i>
-        Create new
+        Create
       </h3>
       <form action="{{ route('judge.store') }}"  method="post">
         @csrf
@@ -91,41 +98,58 @@
       </form>
     </div>
   </div>
-  <div class="col-lg-6">
+  <div class="col-lg-9">
     <h3 class="login-heading mb-3">
       <i class="fa-fw far fa-list"></i>
       List
     </h3>
     <div class="table-responsive">
-      <table class="table table-sm">
+      <table class="table table-sm table-borderless">
         <thead>
           <tr>
-            <th width="10%"><i class="fa-fw far fa-hashtag"></i> No. </th>
-            <th width="35%"><i class="fa-fw far fa-gavel"></i> Name </th>
-            <th width="15%"><i class="fa-fw far fa-key-skeleton"></i> Pin </th>
-            <th><i class="fa-fw far fa-ticket-alt"></i> Token </th>
-            <th><i class="fa-fw far fa-ticket-alt"></i> Action </th>
+            <th width="7.5%"><i class="fa-fw far fa-hashtag"></i> No. </th>
+            <th width="30%"><i class="fa-fw far fa-gavel"></i> Name </th>
+            <th width="12%"><i class="fa-fw far fa-key-skeleton"></i> Pin </th>
+            <th width="20%"><i class="fa-fw far fa-ticket-alt"></i> Token </th>
+            <th width="17.5%"><i class="fa-fw far fa-folder"></i> Category </th>
+            <th width="13%"><i class="fa-fw far fa-ticket-alt"></i> Action </th>
           </tr>
         </thead>
         <tbody>
           @forelse ($judges as $judge)
-            <form action="{{ route('judge.update', $judge->id) }}">
-              <tr>
-                <td hidden> @csrf </td>
-                <td><input type="text" class="form-control" value="{{ $judge->number }}"></td>
-                <td><input type="text" class="form-control" value="{{ $judge->name }}"></td>
-                <td><input type="text" class="form-control" value="{{ $judge->pin }}"></td>
-                <td><input type="text" class="form-control" value="{{ $judge->token }}"></td>
-                <td>
-                  <div class="input-group">
-                    <div class="input-group-append">
-                      <button style="border-top-left-radius:5px!important;border-bottom-left-radius:5px!important;" type="submit" class="btn btn-danger"><i class="fa-fw far fa-pen-alt"></i>
-                      <button type="submit" class="btn btn-danger" value="delete"><i class="fa-fw far fa-trash-alt"></i>
-                    </div>
+            <tr>
+              <form id="update-{{ $judge->id }}" action="{{ route('judge.update', $judge->id) }}" method="post">
+                <input name="_token" value="{{ csrf_token() }}" type="hidden" form="update-{{ $judge->id }}">
+                <input name="_method" value="put" hidden form="update-{{ $judge->id }}">
+              </form>
+              <form id="destroy-{{ $judge->id }}" action="{{ route('judge.destroy', $judge->id) }}" method="post">
+                <input name="_token" value="{{ csrf_token() }}" type="hidden" form="destroy-{{ $judge->id }}">
+                <input name="_method" value="delete" hidden form="destroy-{{ $judge->id }}">
+              </form>
+              <td class="text-center"><input type="text" class="form-control" name="number" value="{{ $judge->number }}" form="update-{{ $judge->id }}"></td>
+              <td><input type="text" class="form-control" name="name" value="{{ $judge->name }}" form="update-{{ $judge->id }}"></td>
+              <td><input type="text" class="form-control" name="pin" value="{{ $judge->pin }}" form="update-{{ $judge->id }}" readonly></td>
+              <td><input type="text" class="form-control" name="token" value="{{ $judge->token }}" form="update-{{ $judge->id }}" readonly></td>
+              <td>
+                <select class="form-control selectpicker show-tick" name="category_id" title="Category"  form="update-{{ $judge->id }}">
+                  @foreach ($active->categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                  @endforeach
+                </select>
+              </td>
+              <td>
+                <div class="input-group">
+                  <div class="input-group-append">
+                    <button type="submit" style="border-top-left-radius:5px!important;border-bottom-left-radius:5px!important;" class="btn btn-danger" form="update-{{ $judge->id }}">
+                      <i class="fa-fw far fa-pen-alt"></i>
+                    </button>
+                    <button type="submit" class="btn btn-danger" form="destroy-{{ $judge->id }}">
+                      <i class="fa-fw far fa-trash-alt"></i>
+                    </button>
                   </div>
-                </td>
-              </tr>
-            </form>
+                </div>
+              </td>
+            </tr>
           @empty
             <tr> No judges </tr>
           @endforelse
