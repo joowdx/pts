@@ -33,13 +33,25 @@ class ContestantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
+      if($request->has('generate')) {
+        if($request->input('generate_count') == null || $request->input('generate_count') == 0) {
+          return redirect()->back();
+        }
+        $count = $this->fixnumber();
+        for($i = 1; $i <= $request->input('generate_count'); $i++) {
+          factory(Contestant::class, $request->input('generate'))->create()->update(['number' => $i + $count]);
+        }
+        return redirect()->back();
+      }
       $request->validate([
-        'category_id' => 'required|string|min:1',
-        'name' => 'required|string|min:3',
+        'category_id' => 'nullable|array|min:1',
+        'name' => 'required|string',
+        'number' => 'required|string|numeric',
       ]);
-      Contestant::create($request->all());
+      $new = Contestant::create($request->except('category_id'));
+      $new->categories()->sync($request->input('category_id'));
+      $this->fixnumber();
       return redirect()->back();
     }
 
@@ -75,10 +87,15 @@ class ContestantController extends Controller
     public function update(Request $request, $id)
     {
       $request->validate([
-        'category_id' => 'required|string|min:1',
-        'name' => 'required|string|min:3',
+        'category_id' => 'nullable|array|min:1',
+        'name' => 'required|string',
+        'number' => 'required|string|numeric',
       ]);
-      Contestant::find($id)->update($request->all());
+      $update = Contestant::find($id);
+      $update->update($request->all());
+      $update->category_id = $request->input('category_id');
+      $update->save();
+      $this->fixnumber();
       return redirect()->back();
     }
 
@@ -90,6 +107,16 @@ class ContestantController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Contestant::find($id)->delete();
+        $this->fixnumber();
+        return redirect()->back();
+    }
+
+    private function fixnumber() {
+      $count = 0;
+      foreach (Contestant::all()->sortBy('number') as $contestant) {
+        $contestant->update(['number' => ++$count]);
+      }
+      return $count;
     }
 }

@@ -15,7 +15,7 @@ class CreateContestantsTable extends Migration
     {
         Schema::create('contestants', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
             $table->string('number');
             $table->timestamps();

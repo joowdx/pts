@@ -63,59 +63,90 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="col-lg-6">
-    <h3 class="login-heading mb-3">
-      <i class="fa-fw far fa-list"></i>
-      List
-    </h3>
-    <div class="">
-      <table class="table table-sm">
-        <thead>
-          <tr>
-            <th width="25%"><i class="fa-fw far fa-folder-open"></i>Category</th>
-            <th width="10%"><i class="fa-fw far fa-hashtag"></i> No. </th>
-            <th width="35%"><i class="fa-fw far fa-gavel"></i> Name </th>
-            <th><i class="fa-fw far fa-ticket-alt"></i> Action </th>
-          </tr>
-        </thead>
-        <tbody>
-          @forelse ($contestants as $contestant)
-            <form action="{{ route('contestant.update', $contestant->id) }}" method="post">
-              <tr>
-                  <td hidden> @csrf </td>
-                  <td hidden> <input type="text" name="_method" value="put"> </td>
-                  <td>
-                  <select class="form-control selectpicker show-tick" name="category_id" id="category_id" title="Category" >
-                    @if($active)
-                      @foreach ($active->categories as $category)
-                        <option value="{{ $category->id }}"> {{ $category->name }} </option>
-                      @endforeach
-                    @endif
-                  </select>
-                </td>
-                <td><input type="text" class="form-control" value="{{ $contestant->number }}" name="number"></td>
-                <td><input type="text" class="form-control" value="{{ $contestant->name }}" name="name"></td>
-                <td>
-                  <div class="input-group">
-                    <div class="input-group-append">
-                      <button style="border-top-left-radius:5px!important;border-bottom-left-radius:5px!important;" type="submit" class="btn btn-danger"><i class="fa-fw far fa-pen-alt"></i>
-                      <button type="submit" class="btn btn-danger" value="delete"><i class="fa-fw far fa-trash-alt"></i>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </form>
-          @empty
-            <tr>
-              <td colspan="4" class="text-center">
-                No Contestants
-              </td>
-            </tr>
-          @endforelse
-        </tbody>
-      </table>
+    <div class="input-group mb-4">
+        <h3 class="login-heading mb-3">
+          <i class="fa-fw far fa-random"></i>
+          Generate
+        </h3>
+
+        <form action="{{ route('contestant.store') }}"  method="post">
+          @csrf
+          @error('generate_count')
+          <div class="text-danger">
+            <small>{{ $message }}</small>
+          </div>
+          @enderror
+          <div class="input-group mb-3">
+            <input id="generate_counte" type="text" class="form-control" name="generate_count" value="{{ old('generate_count') }}" autocomplete="generate_count" autofocus placeholder="Contestant count" maxlength="2">
+            <div class="input-group-append input-group-text">
+              <span class="fa-fw far fa-tally"></span>
+            </div>
+          </div>
+          <div class="input-group mb-2">
+            <button class="btn btn-danger btn-block" type="submit" name="generate">Generate</button>
+          </div>
+        </form>
+      </div>
     </div>
+    <div class="col-lg-6 ">
+        <h3 class="login-heading mb-3">
+          <i class="fa-fw far fa-list"></i>
+          List
+        </h3>
+        <div class="">
+          <table class="table table-sm">
+            <thead>
+              <tr>
+                <th width="10%"><i class="fa-fw far fa-hashtag"></i> No. </th>
+                <th width="35%"><i class="fa-fw far fa-gavel"></i> Name </th>
+                <th width="25%"><i class="fa-fw far fa-folder-open"></i>Category</th>
+                <th><i class="fa-fw far fa-ticket-alt"></i> Action </th>
+              </tr>
+            </thead>
+            <tbody>
+                @forelse ($contestants as $contestant)
+                <tr>
+                 <form id="update-{{ $contestant->id }}" action="{{ route('contestant.update', $contestant->id) }}" method="post">
+                   <input name="_token" value="{{ csrf_token() }}" type="hidden" form="update-{{ $contestant->id }}">
+                   <input name="_method" value="put" hidden form="update-{{ $contestant->id }}">
+                 </form>
+                 <form id="destroy-{{ $contestant->id }}" action="{{ route('contestant.destroy', $contestant->id) }}" method="post">
+                   <input name="_token" value="{{ csrf_token() }}" type="hidden" form="destroy-{{ $contestant->id }}">
+                   <input name="_method" value="delete" hidden form="destroy-{{ $contestant->id }}">
+                 </form>
+                 <td class="text-center"><input type="text" class="form-control" name="number" value="{{ $contestant->number }}" form="update-{{ $contestant->id }}"></td>
+                 <td><input type="text" class="form-control" name="name" value="{{ $contestant->name }}" form="update-{{ $contestant->id }}"></td>
+                 <td>
+                   <select class="form-control selectpicker show-tick" name="category_id" title="Category"  form="update-{{ $contestant->id }}">
+                     @if($active)
+                     @foreach ($active->categories as $category)
+                       <option value="{{ $category->id }}" @if($contestant->category_id == $category->id) selected @endif>{{ $category->name }}</option>
+                     @endforeach
+                     @else
+                       <option>No Categories Available</option>
+                     @endif
+                   </select>
+                 </td>
+                 <td>
+                   <div class="input-group">
+                     <div class="input-group-append">
+                       <button type="submit" style="border-top-left-radius:5px!important;border-bottom-left-radius:5px!important;" class="btn btn-danger" form="update-{{ $contestant->id }}">
+                         <i class="fa-fw far fa-pen-alt"></i>
+                       </button>
+                       <button type="submit" class="btn btn-danger" form="destroy-{{ $contestant->id }}">
+                         <i class="fa-fw far fa-trash-alt"></i>
+                       </button>
+                     </div>
+                   </div>
+                 </td>
+               </tr>
+             @empty
+               <tr> No contestants </tr>
+             @endforelse
+            </tbody>
+          </table>
+        </div>
+      </div>
   </div>
 </div>
 @endsection

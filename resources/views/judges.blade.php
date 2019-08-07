@@ -117,7 +117,7 @@
         </thead>
         <tbody>
           @forelse ($judges as $judge)
-            <tr>
+             <tr>
               <form id="update-{{ $judge->id }}" action="{{ route('judge.update', $judge->id) }}" method="post">
                 <input name="_token" value="{{ csrf_token() }}" type="hidden" form="update-{{ $judge->id }}">
                 <input name="_method" value="put" hidden form="update-{{ $judge->id }}">
@@ -131,10 +131,14 @@
               <td><input type="text" class="form-control" name="pin" value="{{ $judge->pin }}" form="update-{{ $judge->id }}" readonly></td>
               <td><input type="text" class="form-control" name="token" value="{{ $judge->token }}" form="update-{{ $judge->id }}" readonly></td>
               <td>
-                <select class="form-control selectpicker show-tick" name="category_id" title="Category"  form="update-{{ $judge->id }}">
-                  @foreach ($active->categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                  @endforeach
+                <select class="form-control selectpicker show-tick" name="category_id" title="Category"  form="update-{{ $judge->id }}">\
+                  @if($active)
+                    @foreach ($active->categories as $category)
+                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                  @else
+                    <option>No Categories Available</option>
+                  @endif
                 </select>
               </td>
               <td>
