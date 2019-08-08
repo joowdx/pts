@@ -207,7 +207,7 @@ class NavigationController extends Controller
     if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
       return redirect('/x');
     } else {
-      NavigationController::set('asdasdas', [
+      NavigationController::set(\App\Event::where('active', 1)->get()->first()->name, [
         'link' => false,
         'icon' => 'far fa-hashtag',
         'value' => ucfirst('assads'),

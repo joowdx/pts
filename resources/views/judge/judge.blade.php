@@ -15,49 +15,50 @@
 
 
 @section('content')
-<div class="row">
+<div id="vue" class="row">
   @forelse ($active->categories as $category)
-
-  <div class="col-md-6 col-lg-6 col-sm-12 h-100" >
-      <div class="table-responsive">
-        <h1>{{$category->name}}</h1>
-        <form action="">
-          <table class="table table-hover">
-            <thead class="bg-danger">
-              <tr>
-                <th scope="col" width="10%">
-                  <i class="fa-fw far fa-hashtag"></i>
-                </th>
-                <th scope="col">
-                  <i class="fa-fw far fa-user-alt"></i>
-                  Name
-                </th>
-                <th scope="col" width="30%">
-                  <i class="fa-fw far fa-star"> </i>
-                  Score
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              @forelse ($contestants as $contestant)
+  @if($judge->categories->contains($category->id))
+    <div class="col-md-6 col-lg-6 col-sm-12 h-100" >
+        <div class="table-responsive">
+          <h1>{{$category->name}}</h1>
+          <form action="">
+            <table class="table table-hover">
+              <thead class="bg-danger">
                 <tr>
-                  <th>{{$contestant->number}}</th>
-                  <td>{{$contestant->name}}</td>
-                  <td>
-                    <input type="text" class="form-control" id="score1" placeholder="Input the score">
-                  </td>
+                  <th scope="col" width="10%">
+                    <i class="fa-fw far fa-hashtag"></i>
+                  </th>
+                  <th scope="col">
+                    <i class="fa-fw far fa-user-alt"></i>
+                    Name
+                  </th>
+                  <th scope="col" width="30%" class="text-center">
+                    <i class="fa-fw far fa-star"> </i>
+                    Standing
+                  </th>
                 </tr>
-              @empty
+              </thead>
+              <tbody>
+                @forelse ($category->contestants as $contestant)
+                  <tr>
+                    <th>{{ $contestants->count() > 9 ? str_pad( $contestant->number, 2, "0", STR_PAD_LEFT) : $contestant->number }}</th>
+                    <td>{{ $contestant->name }}</td>
+                    <td class="text-center">
+                      {{ $contestants->count() > 9 ? str_pad( $contestant->number, 2, "0", STR_PAD_LEFT) : $contestant->number }}
+                    </td>
+                  </tr>
+                @empty
 
-              @endforelse
-            </tbody>
-          </table>
-          <div class="text-center">
-              <button type="submit" class="btn btn-danger btn-block">Submit</button>
-          </div>
-        </form>
+                @endforelse
+              </tbody>
+            </table>
+            <div class="text-center">
+                <button type="submit" class="btn btn-danger btn-block">Submit</button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    @endif
   @empty
 
   @endforelse

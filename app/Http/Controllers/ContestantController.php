@@ -113,9 +113,11 @@ class ContestantController extends Controller
     }
 
     private function fixnumber() {
-      $count = 0;
-      foreach (Contestant::all()->sortBy('number') as $contestant) {
-        $contestant->update(['number' => ++$count]);
+      foreach (\App\Category::all()->sortBy('number') as $category) {
+        $count = 0;
+        foreach($category->contestants as $contestant) {
+          $contestant->update(['number' => ++$count]);
+        }
       }
       return $count;
     }

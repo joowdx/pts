@@ -18,7 +18,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
           </li>
           <li class="nav-item">
-            <a href="/" class="nav-link"><i class="fa-fw fa fa-home" aria-hidden="true"></i> Home</a>
+            <a href="{{ "/x/$judge->token/$judge->pin$$judge->id" }}" class="nav-link"><i class="fa-fw fa fa-home" aria-hidden="true"></i> Home</a>
           </li>
           <li class="nav-item">
             <a href="/profile" class="nav-link"><i class="fa-fw fa fa-user-secret" aria-hidden="true"></i> Profile</a>
@@ -62,7 +62,7 @@
         </ul>
       </nav>
       <aside class="main-sidebar sidebar-light-danger elevation-4" style="overflow-x: hidden;">
-        <a href="/" class="brand-link bg-danger" style="height: 56px;">
+        <a href=home class="brand-link bg-danger" style="height: 56px;">
           <img src="{{ Application::get('ICON') }}" class="brand-image img-circle elevation-3" style="opacity: .8">
           <span class="brand-text font-weight-regular">
             {{ Application::get('APP NAME SHORT') }}
@@ -127,7 +127,7 @@
                     <ul>
                       @if(Navigation::crumbs())
                       <li>
-                        <a href="{{ url('/') }}">
+                        <a href="{{ "/x/$judge->token/$judge->pin$$judge->id" }}">
                           <i class="fa fa-home" aria-hidden="true"></i>
                           Home
                         </a>
