@@ -39,16 +39,14 @@
                 </tr>
                 <tbody>
               </thead>
-              @forelse ($contestants as $contestant)
-                @if($category->id == $contestant->category->id)
-                  <tr>
-                    <th>{{$contestant->number}}</th>
-                    <td>{{$contestant->name}}</td>
-                    <td>
-                      <input type="text" class="form-control" id="score1" placeholder="Input the score">
-                    </td>
-                  </tr>
-                @endif
+              @forelse ($category->contestants as $contestant)
+                <tr>
+                  <th>{{$contestant->number}}</th>
+                  <td>{{$contestant->name}}</td>
+                  <td>
+                    <input type="text" class="form-control" id="score1" placeholder="Input the score">
+                  </td>
+                </tr>
               @empty
               @endforelse
 

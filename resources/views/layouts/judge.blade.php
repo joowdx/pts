@@ -95,16 +95,18 @@
           </a>
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-              @foreach ($active->categories as $i)
-              <li class="nav-item">
-                <a href="{{ "/x/$judge->token/$judge->pin$$judge->id/$i->id"}}" class="nav-link">
-                  <i class="nav-icon fa-fw far fa-eye"></i>
-                  <p class="font-weight-normal">
-                    {{ $i->name }}
-                    {{-- <span class="right badge badge-pill badge-danger">hello</span> --}}
-                  </p>
-                </a>
-              </li>
+              @foreach ($active->categories as $category)
+                @if($category->judges->contains($judge->id))
+                  <li class="nav-item">
+                    <a href="{{ "/x/$judge->token/$judge->pin$$judge->id/$category->id"}}" class="nav-link">
+                      <i class="nav-icon fa-fw far fa-eye"></i>
+                      <p class="font-weight-normal">
+                        {{ $category->name }}
+                        {{-- <span class="right badge badge-pill badge-danger">hello</span> --}}
+                      </p>
+                    </a>
+                  </li>
+                @endif
               @endforeach
             </ul>
           </nav>
