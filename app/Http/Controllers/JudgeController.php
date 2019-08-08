@@ -73,7 +73,7 @@ class JudgeController extends Controller {
 
   private function fixnumber() {
     $count = 0;
-    foreach (Judge::all()->sortBy('number') as $judge) {
+    foreach (Judge::orderBy('number')->orderBy('updated_at')->get() as $judge) {
       $judge->update(['number' => ++$count]);
     }
     return $count;

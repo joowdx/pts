@@ -131,10 +131,10 @@
               <td><input type="text" class="form-control" name="pin" value="{{ $judge->pin }}" form="update-{{ $judge->id }}" readonly></td>
               <td><input type="text" class="form-control" name="token" value="{{ $judge->token }}" form="update-{{ $judge->id }}" readonly></td>
               <td>
-                <select class="form-control selectpicker show-tick" name="category_id" title="Category"  form="update-{{ $judge->id }}">\
+                <select class="form-control selectpicker show-tick" name="category_id[]" title="Category"  form="update-{{ $judge->id }}" multiple>
                   @if($active)
                     @foreach ($active->categories as $category)
-                      <option value="{{ $category->id }}">{{ $category->name }}</option>
+                      <option value="{{ $category->id }}" @if($judge->categories->contains($category->id)) selected @endif>{{ $category->name }}</option>
                     @endforeach
                   @else
                     <option>No Categories Available</option>

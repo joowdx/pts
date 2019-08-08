@@ -14,6 +14,10 @@ class Category extends Model
     return $this->belongsToMany(Judge::class)->withTimestamps();
   }
 
+  public function contestants() {
+    return $this->hasMany(Contestant::class);
+  }
+
   public function subcategories() {
     return $this->hasMany(Subcategory::class);
   }
