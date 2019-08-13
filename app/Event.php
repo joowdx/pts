@@ -13,4 +13,8 @@ class Event extends Model
     public function categories() {
       return $this->hasMany(Category::class);
     }
+
+    public function contestants() {
+      return $this->hasManyThrough(Contestant::class, Category::class);
+    }
 }

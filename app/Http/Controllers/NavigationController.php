@@ -42,9 +42,9 @@ class NavigationController extends Controller
             'label' => 'Contestants',
           ],
           [
-            'url' => url('/evaluation'),
+            'url' => url('/results'),
             'icon' => 'far fa-badge-percent',
-            'label' => 'Evaluation',
+            'label' => 'Results',
           ],
           [
             'url' => url('/users'),
@@ -148,7 +148,7 @@ class NavigationController extends Controller
     ]);;
   }
 
-  public function evaluation() {
+  public function results() {
     NavigationController::set(__FUNCTION__, [
       'link' => false,
       'icon' => 'far fa-badge-percent',

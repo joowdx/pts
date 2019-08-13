@@ -8,7 +8,7 @@
 
 @section('content')
 <div id="vue" class="row no-gutter">
-  @forelse ($judges as $judge)
+  {{-- @forelse ($judges as $judge)
     <div class="col-md-6 col-lg-6 col-sm-12 h-100 mb-4">
       <h6>{{ $judge->name }}</h6>
     @forelse ($judge->categories as $category)
@@ -61,10 +61,77 @@
     @endforelse
   </div>
   @empty
-  @endforelse
+  @endforelse --}}
+  <div class="col-md-6 col-lg-6 col-sm-12 h-100 mb-4">
+    @forelse ($active->categories as $category)
+      @forelse ($collection as $item)
+        <h5>{{ $category->name }}</h5>
+        <table class="table table-hovel table-sm table-borderless">
+          <thead class="">
+            <tr>
+              <th class="text-left" scope="col" width="10%">
+                <i class="fa-fw far fa-hashtag"></i>
+                No.
+              </th>
+              @forelse ($judges as $judge)
+              <th class="text-left" scoper="col" width="10%">
+                  Judge {{$judge->id}}
+              </th>
+              @empty
+
+              @endforelse
+              <th class="text-left" scoper="col" width="20%">
+                <i class="fa-fw far fa-medal"></i>
+                Rank
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @forelse ($active->contestants as $contestant)
+              <tr>
+                <th class="text-left">
+                  {{$contestant->id}}
+                </th>
+                <th class="text-left">
+                    {{$contestant->id}}
+                  </th>
+                  <th class="text-left">
+                      {{$contestant->id}}
+                    </th>
+                    <th class="text-left">
+                        {{$contestant->id}}
+                      </th>
+                      <th class="text-left">
+                          {{$contestant->id}}
+                        </th>
+                        <th class="text-left">
+                            {{$contestant->id}}
+                          </th>
+                          <th class="text-left">
+                              {{$contestant->id}}
+                            </th>
+              </tr>
+            @empty
+
+            @endforelse
+        </tbody>
+      </table>
+    </div>
+      @empty
+
+      @endforelse
+
+    @empty
+
+    @endforelse
+
 </div>
 @endsection
 
 @section('scripts')
-
+<script>
+$(() => {
+  $('table').DataTable({'dom':'dtr'});
+})
+</script>
 @endsection
