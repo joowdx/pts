@@ -10,10 +10,10 @@
 <div id="vue" class="row no-gutter">
   <div class="col-md-3">
     <div class="mb-4">
-      <h3 class="login-heading mb-3">
+      <h4 class="login-heading mb-3">
         <i class="fa-fw far fa-plus-circle"></i>
         Create
-      </h3>
+      </h4>
       <form action="{{ route('judge.store') }}"  method="post">
         @csrf
         {{-- @error('event_id')
@@ -68,10 +68,10 @@
       </form>
     </div>
     <div class="mb-4">
-      <h3 class="login-heading mb-3">
+      <h4 class="login-heading mb-3">
         <i class="fa-fw far fa-random"></i>
         Generate
-      </h3>
+      </h4>
       <form action="{{ route('judge.store') }}"  method="post">
         @csrf
         @error('generate_count')
@@ -92,10 +92,10 @@
     </div>
   </div>
   <div class="col-lg-9">
-    <h3 class="login-heading mb-3">
+    <h4 class="login-heading mb-3">
       <i class="fa-fw far fa-list"></i>
       List
-    </h3>
+    </h4>
     <div class="table-responsive">
       <table class="table table-sm table-borderless">
         <thead>
@@ -130,7 +130,7 @@
                       <option value="{{ $category->id }}" @if($judge->categories->contains($category->id)) selected @endif>{{ $category->name }}</option>
                     @endforeach
                   @else
-                    <option>No Categories Available</option>
+                    <option disabled>No Categories Available</option>
                   @endif
                 </select>
               </td>
@@ -139,6 +139,9 @@
                   <div class="input-group-append">
                     <button type="submit" style="border-top-left-radius:5px!important;border-bottom-left-radius:5px!important;" class="btn btn-danger" form="update-{{ $judge->id }}">
                       <i class="fa-fw far fa-pen-alt"></i>
+                    </button>
+                    <button type="submit" class="btn btn-danger" form="update-{{ $judge->id }}" name="re-randomize">
+                      <i class="fa-fw far fa-random"></i>
                     </button>
                     <button type="submit" class="btn btn-danger" form="destroy-{{ $judge->id }}">
                       <i class="fa-fw far fa-trash-alt"></i>

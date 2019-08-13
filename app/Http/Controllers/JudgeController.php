@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use App\Judge;
+use Faker\Factory;
 
 class JudgeController extends Controller {
 
@@ -32,13 +34,18 @@ class JudgeController extends Controller {
       'pin' => 'nullable|string|numeric|min:6|max:6',
       'token' => 'nullable|string|min:12|max:12',
     ]);
+    $this->fixnumber($request->input('number'));
     $new = Judge::create($request->except('category_id'));
     $new->categories()->sync($request->input('category_id'));
-    $this->fixnumber();
     return redirect()->back();
   }
 
   public function update(Request $request, $id) {
+    if($request->has('re-randomize')) {
+      $gen = Factory::create();
+      Judge::find($id)->update(['pin' => $gen->randomNumber(6, true), 'token' => Str::random(12)]);
+      return redirect()->back();
+    }
     $request->validate([
       'category_id' => 'nullable|array|min:1',
       'name' => 'required|string',
@@ -48,8 +55,8 @@ class JudgeController extends Controller {
     ]);
     $update = Judge::find($id);
     $update->update($request->except('category_id'));
-    $update->categories()->sync($request->input('category_id'));
-    $this->fixnumber();
+    $update->categories()->sync([1,2,3]);
+    $this->fixnumber($request->input('number'));
     return redirect()->back();
   }
 
@@ -71,9 +78,17 @@ class JudgeController extends Controller {
     return abort(404);
   }
 
-  private function fixnumber() {
+  private function fixnumber($number = null) {
+    $_1 = Judge::where(['number' => $number])->get()->first();
+    if($number && $_1) {
+      if($number + 1 == $this->number || $number - 1 == $this->number){
+        $_1->update(['number' => $this->number]);
+      } else {
+        $_1->update(['number' => $number + 1]);
+      }
+    }
     $count = 0;
-    foreach (Judge::orderBy('number')->orderBy('updated_at')->get() as $judge) {
+    foreach (Judge::all()->sortBy('number') as $judge) {
       $judge->update(['number' => ++$count]);
     }
     return $count;

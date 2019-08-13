@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
   protected $fillable = [
-    'event_id', 'name', 'eliminate',
+    'event_id', 'name', 'eliminate', 'scoring',
   ];
 
   public function judges() {
@@ -21,4 +21,9 @@ class Category extends Model
   public function subcategories() {
     return $this->hasMany(Subcategory::class);
   }
+
+  public function scores() {
+    return $this->hasManyThrough(Score::class, Subcategory::class);
+  }
+
 }

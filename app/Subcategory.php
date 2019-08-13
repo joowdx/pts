@@ -13,4 +13,13 @@ class Subcategory extends Model
   public function category() {
     return $this->belongsTo(Category::class);
   }
+
+  public function scores() {
+    return $this->hasMany(Score::class);
+  }
+
+  public function standings() {
+
+  }
+
 }

@@ -20,6 +20,9 @@ class CreateSubcategoriesTable extends Migration
           $table->string('weight')->nullable();
           $table->string('type')->nullable();
           $table->timestamps();
+          $table->foreign('category_id')->references('id')->on('categories')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

@@ -28,6 +28,7 @@ Route::resource('category', 'CategoryController')->middleware(['auth']);;
 Route::resource('subcategory', 'SubcategoryController')->middleware(['auth']);;
 Route::resource('judge', 'JudgeController')->middleware(['auth']);;
 Route::resource('contestant', 'ContestantController')->middleware(['auth']);;
+Route::resource('score', 'ScoreController')->middleware(['auth']);;
 
 Route::get('/x', 'NavigationController@x');
 Route::get('/x/{j}', 'NavigationController@xj');

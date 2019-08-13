@@ -116,13 +116,13 @@
           <div class="content-header">
             <div class="container-fluid">
               <div class="row mb-2">
-                <div class="col-2">
+                <div class="col-5">
                   <h3> {{ Navigation::url() }} </h3>
                 </div>
                 {{-- @component('components.breadcrumbs') --}}
 
                 {{-- @endcomponent --}}
-                <div class="col-10 d-none d-sm-block ml-0">
+                <div class="col-7 d-none d-sm-block ml-0">
                   <div id="crumbs" class="d-flex justify-content-end">
                     <ul>
                       @if(Navigation::crumbs())

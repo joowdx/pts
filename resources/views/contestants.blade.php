@@ -8,10 +8,10 @@
 <div id="vue" class="row no-gutter">
   <div class="col-md-3">
     <div class="mb-4">
-      <h3 class="login-heading mb-4">
+      <h4 class="login-heading mb-4">
         <i class="fa-fw far fa-plus-circle"></i>
         Create new
-      </h3>
+      </h4>
       <form action="{{ route('contestant.store') }}"  method="post">
         @csrf
         @error('event_id')
@@ -60,10 +60,10 @@
       </form>
     </div>
     <div class="mb-4">
-      <h3 class="login-heading mb-3">
+      <h4 class="login-heading mb-3">
         <i class="fa-fw far fa-random"></i>
         Generate
-      </h3>
+      </h4>
       <form action="{{ route('contestant.store') }}"  method="post">
         @csrf
         @error('generate_count')
@@ -149,10 +149,10 @@
     @endif
     @forelse($active->categories as $category)
       <div class="">
-        <h3 class="login-heading mb-3">
+        <h4 class="login-heading mb-3">
           <i class="fa-fw far fa-star"></i>
           {{ $category->name }}
-        </h3>
+        </h4>
         <div class="table-responsive">
           <table class="table table-sm table-borderless">
             <thead>

@@ -187,7 +187,7 @@ class NavigationController extends Controller
   public function x() {
     return view('judge.login')->with([
       'active' => \App\Event::where('active', 1)->get()->first(),
-      'judges' => \App\Judge::all(),
+      'judges' => \App\Judge::all()->sortBy('number'),
     ]);
   }
 
@@ -207,11 +207,7 @@ class NavigationController extends Controller
     if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
       return redirect('/x');
     } else {
-      NavigationController::set(\App\Event::where('active', 1)->get()->first()->name, [
-        'link' => false,
-        'icon' => 'far fa-hashtag',
-        'value' => ucfirst('assads'),
-      ]);
+      NavigationController::set(\App\Event::where('active', 1)->get()->first()->name,[]);
       return view('judge.judge')->with([
         'active' => \App\Event::where('active', 1)->get()->first(),
         'judge' => $judge,
@@ -224,8 +220,8 @@ class NavigationController extends Controller
     $judge = \App\Judge::find(@explode('$',$j)[1]);
     if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
       return redirect('/x');
-    } else if(\App\Category::find($c) == null) {
-      return redirect("/x/$t/$j");
+    } else if(!\App\Category::find($c) || !$judge->categories->contains($c)) {
+      return abort(404);
     } else {
       $category = \App\Category::find($c);
       NavigationController::set($category->name, [

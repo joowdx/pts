@@ -53,14 +53,12 @@ class EventController extends Controller
       if($request->input('active') != null) {
         $request->validate([
           'name' => 'required|string|min:3|unique:events,name,'.$request->input('active'),
-          'scoring' => 'required|string|numeric|in:1,2,3',
         ]);
         Event::find($request->input('set_active'))->update($request->all());
         return redirect()->back();
       }
       $request->validate([
         'name' => 'required|string|min:3|unique:events',
-        'scoring' => 'required|string|numeric|in:1,2,3',
       ]);
       Event::create($request->all());
       return redirect()->back();

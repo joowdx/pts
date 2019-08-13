@@ -5,7 +5,7 @@
   <div class="card">
     <div class="card-body login-card-body">
       <div class="login-logo">
-        <a href=""><b>Admin</b>LTE</a>
+        <a href="">XPTS</a>
       </div>
       <form action="{{ route('login') }}"  method="post">
         @csrf

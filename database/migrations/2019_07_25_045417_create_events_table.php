@@ -15,8 +15,7 @@ class CreateEventsTable extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
           $table->bigIncrements('id');
-          $table->string('name')->unique();
-          $table->string('scoring');
+          $table->string('name');
           $table->boolean('active')->default(1);
           $table->timestamps();
         });

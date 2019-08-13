@@ -19,6 +19,9 @@ class CreateContestantsTable extends Migration
             $table->string('name');
             $table->string('number');
             $table->timestamps();
+            $table->foreign('category_id')->references('id')->on('categories')
+                  ->onDelete('cascade')
+                  ->onUpdate('cascade');
         });
     }
 
