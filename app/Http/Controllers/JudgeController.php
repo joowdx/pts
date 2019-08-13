@@ -24,7 +24,7 @@ class JudgeController extends Controller {
       }
       return redirect()->back();
     }
-    if(count(Judge::all() > 12)) {
+    if(count(Judge::all()) > 12) {
       return redirect()->back();
     }
     $request->validate([
@@ -55,12 +55,13 @@ class JudgeController extends Controller {
     ]);
     $update = Judge::find($id);
     $update->update($request->except('category_id'));
-    $update->categories()->sync([1,2,3]);
+    $update->categories()->sync($request->input('category_id'));
     $this->fixnumber($request->input('number'));
     return redirect()->back();
   }
 
   public function destroy($id) {
+    Judge::find($id)->categories()->sync([]);
     Judge::find($id)->delete();
     $this->fixnumber();
     return redirect()->back();
@@ -80,11 +81,11 @@ class JudgeController extends Controller {
 
   private function fixnumber($number = null) {
     $_1 = Judge::where(['number' => $number])->get()->first();
-    if($number && $_1) {
-      if($number + 1 == $this->number || $number - 1 == $this->number){
-        $_1->update(['number' => $this->number]);
+    if(@$number && $_1) {
+      if(@$number + 1 == @$this->number || @$number - 1 == @$this->number){
+        $_1->update(['number' => @$this->number]);
       } else {
-        $_1->update(['number' => $number + 1]);
+        $_1->update(['number' => @$number + 1]);
       }
     }
     $count = 0;

@@ -34,3 +34,7 @@ Route::get('/x', 'NavigationController@x');
 Route::get('/x/{j}', 'NavigationController@xj');
 Route::get('/x/{t}/{j}', 'NavigationController@xt');
 Route::get('/x/{t}/{j}/{c}', 'NavigationController@xc');
+
+Route::get('/test/{id}', function($id) {
+  return \App\Judge::find($id)->standings(1);
+});
