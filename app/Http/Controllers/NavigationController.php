@@ -154,7 +154,11 @@ class NavigationController extends Controller
       'icon' => 'far fa-badge-percent',
       'value' => ucfirst(__FUNCTION__),
     ]);
-    return view(__FUNCTION__);
+    return view(__FUNCTION__)->with([
+      'active' => \App\Event::where('active', 1)->get()->first(),
+      'category' => \App\Category::get()->first(),
+      'judges' => \App\Judge::all(),
+    ]);
   }
 
   public function users() {

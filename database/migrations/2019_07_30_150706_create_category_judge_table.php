@@ -17,7 +17,6 @@ class CreateCategoryJudgeTable extends Migration
           $table->bigIncrements('id');
           $table->unsignedBigInteger('category_id');
           $table->unsignedBigInteger('judge_id');
-          $table->string('scoring');
           $table->timestamps();
           $table->foreign('category_id')->references('id')->on('categories')
                 ->onDelete('cascade')

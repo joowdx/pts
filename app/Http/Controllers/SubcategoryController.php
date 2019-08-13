@@ -40,7 +40,6 @@ class SubcategoryController extends Controller
         'name' => 'required|string|min:3',
         'weight' => 'required|string|numeric',
         'type' => 'nullable|string|in:final',
-        'scoring' => 'required|string|in:avg,rnk,pts',
       ]);
       Subcategory::create($request->all());
       return redirect()->back();
