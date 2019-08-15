@@ -17,7 +17,7 @@ Route::get('/dashboard', 'NavigationController@dashboard')->middleware(['auth'])
 Route::get('/events', 'NavigationController@events')->middleware(['auth']);
 Route::get('/judges', 'NavigationController@judges')->middleware(['auth']);
 Route::get('/contestants', 'NavigationController@contestants')->middleware(['auth']);
-Route::get('/evaluation', 'NavigationController@evaluation')->middleware(['auth']);
+Route::get('/results', 'NavigationController@results')->middleware(['auth']);
 Route::get('/users', 'NavigationController@users')->middleware(['auth']);
 Route::get('/settings', 'NavigationController@settings')->middleware(['auth']);
 Route::get('/about', 'NavigationController@about')->middleware(['auth']);
