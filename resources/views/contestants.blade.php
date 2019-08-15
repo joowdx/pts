@@ -112,7 +112,7 @@
                       <input name="_token" value="{{ csrf_token() }}" type="hidden" form="destroy-{{ $contestant->id }}">
                       <input name="_method" value="delete" hidden form="destroy-{{ $contestant->id }}">
                     </form>
-                    <td class="text-center"><input type="text" class="form-control" name="number" value="{{ $contestant->number }}" form="update-{{ $contestant->id }}"></td>
+                    <td data-order="{{ $contestant->number }}"><input type="text" class="form-control" name="number" value="{{ $contestant->number }}" form="update-{{ $contestant->id }}"></td>
                     <td><input type="text" class="form-control" name="name" value="{{ $contestant->name }}" form="update-{{ $contestant->id }}"></td>
                     <td>
                       <select class="form-control selectpicker show-tick" name="category_id" title="Category"  form="update-{{ $contestant->id }}">
@@ -215,5 +215,6 @@
 @endsection
 
 @section('scripts')
-
+<script>
+</script>
 @endsection

@@ -37,19 +37,18 @@
                         Score
                       </th>
                     </tr>
-                    <tbody>
                   </thead>
-                  @forelse ($category->contestants as $contestant)
-                    <tr>
-                      <th class="text-center align-middle">{{ $contestant->number }}</th>
-                      <td class="align-middle">{{ $contestant->name }}</td>
-                      <td class="" data-order="{{ $judge->score($subcategory->id, $contestant->id)}}">
-                        {{ $judge->score($subcategory->id, $contestant->id) }}
-                      </td>
-                    </tr>
-                  @empty
-                  @endforelse
-
+                  <tbody>
+                    @forelse ($category->contestants as $contestant)
+                      <tr>
+                        <th class="text-center align-middle">{{ $contestant->number }}</th>
+                        <td class="align-middle">{{ $contestant->name }}</td>
+                        <td class="" data-order="{{ $judge->score($subcategory->id, $contestant->id)}}">
+                          {{ $judge->score($subcategory->id, $contestant->id) }}
+                        </td>
+                      </tr>
+                    @empty
+                    @endforelse
                   </tbody>
                 </table>
               </div>

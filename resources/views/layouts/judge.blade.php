@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ Application::get('APP NAME') }}</title>
+    <title>{{ ("XPTS | $active->name") }}</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="shortcut icon" href="{{ Application::get('ICON') }}" type="image/x-icon">
     @yield('styles')
@@ -28,31 +28,6 @@
           {{-- ADD LINKS THAT HIDE ON SMALLER SCREEN --}}
         </ul>
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-              <i class="fas fa-bells"></i>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-              <span class="dropdown-item dropdown-header">15 Notifications</span>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="fa fa-envelope mr-2"></i> 4 new messages
-                <span class="float-right text-muted text-sm">3 mins</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="fa fa-users mr-2"></i> 8 friend requests
-                <span class="float-right text-muted text-sm">12 hours</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">
-                <i class="fa fa-file mr-2"></i> 3 new reports
-                <span class="float-right text-muted text-sm">2 days</span>
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-            </div>
-          </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}"onclick="event.preventDefault();document.getElementById('logout-form').submit();">
               <i class="fas fa-sign-out"></i>
@@ -99,10 +74,10 @@
                 @if($category->judges->contains($judge->id))
                   <li class="nav-item">
                     <a href="{{ "/x/$judge->token/$judge->pin$$judge->id/$category->id"}}" class="nav-link">
-                      <i class="nav-icon fa-fw far fa-eye"></i>
+                      <i class="nav-icon fa-fw far fa-star"></i>
                       <p class="font-weight-normal">
                         {{ $category->name }}
-                        {{-- <span class="right badge badge-pill badge-danger">hello</span> --}}
+                        <span class="right badge badge-pill badge-danger">hello</span>
                       </p>
                     </a>
                   </li>

@@ -26,11 +26,6 @@ class NavigationController extends Controller
             'icon' => 'far fa-star',
             'label' => 'Events',
           ],
-          // [
-          //   'url' => url('/categories'),
-          //   'icon' => 'far fa-layer-group',
-          //   'label' => 'Categories',
-          // ],
           [
             'url' => url('/judges'),
             'icon' => 'far fa-gavel',

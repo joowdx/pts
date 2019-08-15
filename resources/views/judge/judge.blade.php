@@ -11,14 +11,19 @@
 <div id="vue" class="row">
   @forelse ($active->categories as $category)
     @if($judge->categories->contains($category->id))
+      @php
+        $scoring =  $category->scoring == 'rnk' ? 'Rank' : ($category->scoring == 'avg' ? 'Average' : ($category->scoring == 'pts' ? 'Points' : ''));
+      @endphp
       <div class="col-md-6 col-lg-6 col-sm-12 h-100" >
         <div class="table-responsive">
-          <h5>{{ $category->name }}</h4>
+          <a href="{{ "/x/$judge->token/$judge->pin$$judge->id/$category->id" }}" class="text-dark nav-link m-0 p-2">
+            <h5 class="m-0"><i class="fa-fw far fa-star"></i> {{ $category->name }}</h5>
+          </a>
           <form action="">
-            <table class="table table-hover table-borderless">
-              <thead>
+            <table class="table table-hover table-sm table-borderless @if($scoring == 'Rank') rank @endif">
+              <thead class="bg-danger">
                 <tr>
-                  <th scope="col" width="10%">
+                  <th class="text-center" scope="col" width="10%">
                     <i class="fa-fw fas fa-hashtag"></i>
                   </th>
                   <th scope="col">
@@ -26,19 +31,17 @@
                     Name
                   </th>
                   <th scope="col" width="30%" class="text-center">
-                    <i class="fa-fw far fa-star"> </i>
-                    Standing
+                    <i class="fa-fw far fa-medal"></i>
+                    {{ $scoring }}
                   </th>
                 </tr>
               </thead>
               <tbody>
-                @forelse ($category->contestants as $contestant)
+                @forelse ($judge->standings($category->id) as $contestant)
                   <tr>
-                    <th>{{ $contestants->count() > 9 ? str_pad( $contestant->number, 2, "0", STR_PAD_LEFT) : $contestant->number }}</th>
+                    <th class="text-center">{{ $contestant->number }}</th>
                     <td>{{ $contestant->name }}</td>
-                    <td class="text-center">
-                      {{ $contestants->count() > 9 ? str_pad( $contestant->number, 2, "0", STR_PAD_LEFT) : $contestant->number }}
-                    </td>
+                    <td class="text-center"> {{ $contestant->remark }} @if($category->scoring == 'avg') % @endif </td>
                   </tr>
                 @empty
 
@@ -59,7 +62,14 @@
 @section('scripts')
 <script>
 $(() => {
-  $('table').DataTable({'dom':'dtr'});
+  $('table:not(.rank)').DataTable({
+    'order': [[2, 'desc']],
+    'dom':'dtr',
+  })
+  $('.rank').DataTable({
+    'order': [[2, 'asc']],
+    'dom':'dtr',
+  })
 })
 </script>
 @endsection
