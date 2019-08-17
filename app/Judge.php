@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Score;
+use App\Contestant;
 use App\Category;
 use App\Subcategory;
 
@@ -28,9 +29,23 @@ class Judge extends Model {
     ])->get()->first()->score;
   }
 
-  public function standings($category_id) {
+  public function standings($category_id, $contestant_id = null) {
     $category = Category::find($category_id);
     $standings = [];
+    if($contestant_id) {
+      $contestant = Contestant::find($contestant_id);
+      $totalweight = 0;
+      if($category->scoring == 'avg') {
+        $totalweight = Subcategory::where(['category_id' => $category->id])->get()->pluck('weight')->sum();
+      }
+      foreach($category->subcategories as $subcategory) {
+        $contestant->total += $this->score($subcategory->id, $contestant->id);
+        if($category->scoring == 'avg') {
+          $contestant->remark += $this->score($subcategory->id, $contestant->id) * $subcategory->weight / ($totalweight ? $totalweight : 1);
+        }
+      }
+      return $contestant;
+    }
     foreach($category->contestants as $contestant) {
       $standings[$contestant->number] = [
         'contestant' => $contestant,

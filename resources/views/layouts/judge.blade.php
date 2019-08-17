@@ -20,9 +20,9 @@
           <li class="nav-item">
             <a href="{{ "/x/$judge->token/$judge->pin$$judge->id" }}" class="nav-link"><i class="fa-fw fa fa-home" aria-hidden="true"></i> Home</a>
           </li>
-          <li class="nav-item">
-            <a href="/profile" class="nav-link"><i class="fa-fw fa fa-user-secret" aria-hidden="true"></i> Profile</a>
-          </li>
+          {{-- <li class="nav-item">
+            <a href="{{ "/x/$judge->token/$judge->pin$$judge->id" }}" class="nav-link"><i class="fa-fw fa fa-user-secret" aria-hidden="true"></i> Profile</a>
+          </li> --}}
         </ul>
         <ul class="navbar-nav d-none d-sm-block">
           {{-- ADD LINKS THAT HIDE ON SMALLER SCREEN --}}
@@ -44,30 +44,20 @@
           </span>
         </a>
         <div class="sidebar" style="margin-top: 56px;">
-          <a href="{{ url('/profile') }}" class="d-block">
-            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-              <div class="image">
-                <img src="{{ Auth::user()->icon }}" class="img-circle elevation-2">
-              </div>
-              <div class="info">
-                <i class="far fa-at"></i>{{ Auth::user()->username }}
-                @php
-                  $verified = Auth::user()->email_verified_at;
-                  $type = Auth::user()->type == 'master admin' ? 'master' : (Auth::user()->type == 'moderator' ? 'mod' : Auth::user()->type);
-                  $icon = $type=='master'?'secret':($type=='admin'?'tie':'shield');
-                  $color = $type=='master'?'black':($type=='admin'?'danger':'warning');
-                @endphp
-                @if($verified)
-                  <i class="fas fa-fw fa-badge-check text-{{ $color }}"></i>
-                @endif
-                @if($type != 'general')
-                  <span class="right badge badge-pill bg-{{ $color }}">
-                    <i class="fas fa-fw fa-user-{{ $icon }}"></i> {{ $type }}
+          <ul class="nav nav-pills nav-sidebar flex-column my-3" data-widget="treeview" role="menu">
+            <li class="nav-item">
+              <a class="nav-link">
+                <i class="nav-icon fa-fw fas fa-user-tie"></i>
+                <p class="font-weight-normal">
+                  {{ "J$judge->number - $judge->name" }}
+                  <span class="right badge badge-pill badge-danger">
+                    <i class="fa-fw far fa-gavel"></i>
+                    chair
                   </span>
-                @endif
-              </div>
-            </div>
-          </a>
+                </p>
+              </a>
+            </li>
+          </ul>
           <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
               @foreach ($active->categories as $category)
@@ -77,7 +67,6 @@
                       <i class="nav-icon fa-fw far fa-star"></i>
                       <p class="font-weight-normal">
                         {{ $category->name }}
-                        <span class="right badge badge-pill badge-danger">hello</span>
                       </p>
                     </a>
                   </li>

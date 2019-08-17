@@ -228,7 +228,7 @@ class NavigationController extends Controller
         'icon' => 'far fa-star',
         'value' => ucfirst($category->name),
       ]);
-      return view('judge.category')->with([
+      return view('judge.contestant')->with([
         'active' => \App\Event::where('active', 1)->get()->first(),
         'judge' => $judge,
         'contestants' => \App\Contestant::all()->sortBy('number'),

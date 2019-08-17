@@ -159,7 +159,7 @@
                             @csrf
                             <input name="category_id" type="text" value="{{ $category->id }}" hidden>
                             <input name="name" class="form-control" type="text" value="" placeholder="Sub-category" style="border-top-left-radius:5px!important;border-bottom-left-radius:5px;!important">
-                            @if($category->eliminate != null && $category->scoring != 'rnk')
+                            @if(($category->eliminate != null || $category->scoring == 'avg') && $category->scoring != 'rnk')
                               <input name="weight" class="form-control" type="text" placeholder="Weight">
                             @endif
                             <div class="input-group-append">
@@ -180,7 +180,7 @@
                               <input name="_method" value="put" hidden>
                               <input name="category_id" type="text" value="{{ $category->id }}" hidden>
                               <input name="name" class="form-control" type="text" value="{{ $subcategory->name }}" style="border-top-left-radius:5px!important;border-bottom-left-radius:5px;!important" placeholder="Sub-categories">
-                              @if($category->eliminate != null && $category->scoring != 'rnk')
+                              @if(($category->eliminate != null || $category->scoring == 'avg') && $category->scoring != 'rnk')
                                 <input name="weight" class="form-control" type="text" value="{{ $subcategory->weight }}" placeholder="Weight" @if($subcategory->type) hidden @endif>
                               @endif
                               <div class="input-group-append">

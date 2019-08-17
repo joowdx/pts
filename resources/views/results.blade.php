@@ -2,7 +2,9 @@
 
 @section('styles')
 <style>
-
+#datatables_buttons_info {
+  display: none !important;
+}
 </style>
 @endsection
 
@@ -61,7 +63,7 @@
   </div>
   @empty
   @endforelse --}}
-  <div class="col-md-6 col-lg-6 col-sm-12 h-100 mb-4">
+  {{-- <div class="col-md-6 col-lg-6 col-sm-12 h-100 mb-4">
     @forelse ($active->categories as $category)
       @forelse ($collection as $item)
         <h5>{{ $category->name }}</h5>
@@ -122,15 +124,56 @@
 
     @empty
 
-    @endforelse
-
+    @endforelse --}}
+  @foreach ($active->categories as $category)
+    <div class="col-lg-6">
+      <h5> {{ $category->name }} </h5>
+      <table class="table table-hover table-sm table-borderless" style="margin:0!important">
+        <thead class="bg-danger">
+          <tr>
+            <th class="text-center">
+              Contestant
+            </th>
+            @foreach ($judges as $judge)
+              <th>
+                Judge {{ $judge->number }}
+              </th>
+            @endforeach
+            <th>
+              Remarks
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @foreach ($category->contestants as $contestant)
+            <tr>
+              <th>
+                # {{ $contestant->number }}
+              </th>
+              @foreach ($judges as $judge)
+                <td>
+                  {{ @$judge->standings($category->id, $contestant->id)->remark.'%' }}
+                </td>
+              @endforeach
+              <th>
+                {{ @$category->standings($contestant->id)->remark.'%' }}
+              </th>
+            </tr>
+          @endforeach
+        </tbody>
+      </table>
+    </div>
+  @endforeach
 </div>
 @endsection
 
 @section('scripts')
 <script>
 $(() => {
-  $('table').DataTable({'dom':'dtr'});
+  $('table').DataTable({
+    'dom': 'rt',
+  })
+  $('.dt-buttons.btn-group > button').addClass('btn-danger btn-sm')
 })
 </script>
 @endsection
