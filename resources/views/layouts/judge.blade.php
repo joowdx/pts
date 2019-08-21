@@ -50,10 +50,10 @@
                 <i class="nav-icon fa-fw fas fa-user-tie"></i>
                 <p class="font-weight-normal">
                   {{ "J$judge->number - $judge->name" }}
-                  <span class="right badge badge-pill badge-danger">
+                  {{-- <span class="right badge badge-pill badge-danger">
                     <i class="fa-fw far fa-gavel"></i>
                     chair
-                  </span>
+                  </span> --}}
                 </p>
               </a>
             </li>
@@ -90,20 +90,20 @@
                   <div id="crumbs" class="d-flex justify-content-end">
                     <ul>
                       @if(Navigation::crumbs())
-                      <li>
-                        <a href="{{ "/x/$judge->token/$judge->pin$$judge->id" }}">
-                          <i class="fa fa-home" aria-hidden="true"></i>
-                          Home
-                        </a>
-                      </li>
-                      @foreach (Navigation::crumbs() as $crumb)
-                      <li>
-                        <a href="{{ $crumb->link && !$loop->last ? $crumb->link : 'javascript:void(0)' }}" {{ $loop->last ? 'class=bg-danger' : '' }}>
-                          <i class="{{ $crumb->icon }}" aria-hidden="true"></i>
-                          {{ $crumb->value }}
-                        </a>
-                      </li>
-                      @endforeach
+                        <li>
+                          <a href="{{ "/x/$judge->token/$judge->pin$$judge->id" }}">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            Home
+                          </a>
+                        </li>
+                        @foreach (Navigation::crumbs() as $crumb)
+                          <li>
+                            <a href="{{ $crumb->link && !$loop->last ? $crumb->link : 'javascript:void(0)' }}" {{ $loop->last ? 'class=bg-danger' : '' }}>
+                              <i class="{{ $crumb->icon }}" aria-hidden="true"></i>
+                              {{ $crumb->value }}
+                            </a>
+                          </li>
+                        @endforeach
                       @endif
                     </ul>
                   </div>

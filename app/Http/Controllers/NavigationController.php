@@ -71,7 +71,7 @@ class NavigationController extends Controller
 
   public static function set($tab = null, $crumbs = []) {
     NavigationController::$url = ucfirst($tab);
-    NavigationController::$crumbs = json_decode(json_encode($crumbs ? [$crumbs] : []));
+    NavigationController::$crumbs = json_decode(json_encode($crumbs?[$crumbs]:[]));
   }
 
   public function index() {
@@ -228,12 +228,36 @@ class NavigationController extends Controller
         'icon' => 'far fa-star',
         'value' => ucfirst($category->name),
       ]);
-      return view('judge.contestant')->with([
+      return view('judge.category')->with([
         'active' => \App\Event::where('active', 1)->get()->first(),
         'judge' => $judge,
-        'contestants' => \App\Contestant::all()->sortBy('number'),
         'category' => \App\Category::find($c),
         'final' => \App\Subcategory::where(['type' => 'final', 'category_id' => $c])->get()->first(),
+      ]);
+    }
+  }
+  public function xcf($t, $j, $c) {
+    $judge = \App\Judge::find(@explode('$',$j)[1]);
+    if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
+      return redirect('/x');
+    } else if(!\App\Category::find($c) || !$judge->categories->contains($c)) {
+      return abort(404);
+    } else {
+      $category = \App\Category::find($c);
+      NavigationController::set($category->name,[
+        'link' => false,
+        'icon' => 'far fa-star',
+        'value' => 'Final',
+      ]);
+      if(!$category->eliminate) {
+        return abort(404);
+      }
+      return view('judge.final')->with([
+        'active' => \App\Event::where('active', 1)->get()->first(),
+        'judge' => $judge,
+        'category' => $category,
+        'final' => \App\Subcategory::where(['type' => 'final', 'category_id' => $c])->get()->first(),
+        'contestants' => $category->contestants,
       ]);
     }
   }

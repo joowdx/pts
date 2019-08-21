@@ -46,7 +46,8 @@ class ScoreController extends Controller {
       'contestant_id' => 'required|array',
       'score' => 'required|array',
     ]);
-    if(Subcategory::find($request->input('subcategory_id'))->category->judges->contains($request->input('judge_id'))) {
+    $subcategory = Subcategory::find($request->input('subcategory_id'));
+    if($subcategory->category->judges->contains($request->input('judge_id'))) {
       for($i = 0; $i < count($request->input('score')); $i++) {
         Score::firstOrCreate([
           'judge_id' => $request->input('judge_id'),
@@ -58,6 +59,7 @@ class ScoreController extends Controller {
       }
       return redirect()->back();
     }
+    Judge::find($request->input('judge_id'))->setstandings($subcategory->category->id);
     return abort(404);
   }
 

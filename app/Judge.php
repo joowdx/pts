@@ -7,8 +7,12 @@ use App\Score;
 use App\Contestant;
 use App\Category;
 use App\Subcategory;
+use Error;
 
 class Judge extends Model {
+
+  private $standings = [];
+
   protected $fillable = [
     'name', 'number', 'pin', 'token',
   ];
@@ -29,87 +33,60 @@ class Judge extends Model {
     ])->get()->first()->score;
   }
 
-  public function standings($category_id, $contestant_id = null) {
+  public function final($category_id, $contestant_id = null) {
     $category = Category::find($category_id);
-    $standings = [];
-    if($contestant_id) {
-      $contestant = Contestant::find($contestant_id);
-      $totalweight = 0;
-      if($category->scoring == 'avg') {
-        $totalweight = Subcategory::where(['category_id' => $category->id])->get()->pluck('weight')->sum();
+    $contestants = [];
+    foreach ($category->finalists() as $contestant) {
+      $contestants[$contestant->number] = $contestant;
+      $final = Subcategory::where(['category_id' => $category->id, 'type' => 'final'])->get()->first();
+      $contestant->average = $this->score($final->id, $contestant->id);
+      if($contestant_id == $contestant->id) {
+        return $contestant;
       }
-      foreach($category->subcategories as $subcategory) {
-        $contestant->total += $this->score($subcategory->id, $contestant->id);
-        if($category->scoring == 'avg') {
-          $contestant->remark += $this->score($subcategory->id, $contestant->id) * $subcategory->weight / ($totalweight ? $totalweight : 1);
-        }
-      }
-      return $contestant;
     }
+    return $contestants;
+  }
+
+  public function setstandings($category_id, $contestant_id = null) {
+    $category = Category::find($category_id);
+    $totalweight = Subcategory::where(['category_id' => $category->id])->get()->pluck('weight')->sum();
+    $contestants = [];
     foreach($category->contestants as $contestant) {
-      $standings[$contestant->number] = [
-        'contestant' => $contestant,
-        'total' => 0,
-      ];
-      if($category->scoring == 'rnk'){
-        $standings[$contestant->number] = [
-          'contestant' => $contestant,
-          'total' => 0,
-          'rank' => 0,
-        ];
-      } else if($category->scoring == 'avg') {
-        $standings[$contestant->number] = [
-          'contestant' => $contestant,
-          'total' => 0,
-          'average' => 0,
-        ];
-      }
-      $totalweight = 0;
-      if($category->scoring == 'avg') {
-        $totalweight = Subcategory::where(['category_id' => $category->id])->get()->pluck('weight')->sum();
-      }
+      $contestants[$contestant->number] = $contestant;
       foreach($category->subcategories as $subcategory) {
-        $standings[$contestant->number]['total'] += $this->score($subcategory->id, $contestant->id);
-        if($category->scoring == 'avg') {
-        $standings[$contestant->number]['average'] += $this->score($subcategory->id, $contestant->id) * $subcategory->weight / ($totalweight ? $totalweight : 1);
+        if($subcategory->type == 'final') {
+          continue;
         }
+        $contestant->average += $this->score($subcategory->id, $contestant->id) * $subcategory->weight / ($totalweight ? $totalweight : 1);
       }
     }
-    usort($standings,function($a,$b){return($a['total']==$b['total']?0:$a['total']>$b['total'])?-1:1;});
-    if($category->scoring == 'rnk') {
-      $tmp = null;
-      $rank = 1;
-      foreach ($standings as $k => $v) {
-        $contestant = $standings[$k]['contestant'];
-        $contestant->total = $v['total'];
-        $contestant->remark = $v['total'] == @$tmp['total'] ? $contestant->remark = @$tmp->remark : $rank;
-        $standings[$k] = $contestant;
-        $tmp = $standings[$k];
-        $rank++;
+    usort($contestants,function($a,$b){return($a->average==$b->average?0:$a->average>$b->average)?-1:1;});
+    $tmp = null;
+    $rank = 1;
+    foreach ($contestants as $contestant) {
+      $contestant->rank = $contestant->average == @$tmp->average ? @$tmp->rank : $rank;
+      $tmp = $contestant;
+      $rank++;
+      if($contestant_id == $contestant->id) {
+        return $contestant;
       }
-      return $standings;
-    } else if($category->scoring == 'avg') {
-      $tmp = null;
-      $rank = 1;
-      foreach ($standings as $k => $v) {
-        $contestant = $standings[$k]['contestant'];
-        $contestant->total = $v['total'];
-        $contestant->remark = number_format((float)$v['average'], 2, '.', '');
-        $standings[$k] = $contestant;
-        $tmp = $standings[$k];
+    }
+    $this->standings[$category_id] = $contestants;
+    return $contestants;
+  }
+
+  public function getstandings($category_id, $contestant_id = null) {
+    if(!$this->standings || !$this->standings[$category_id]) {
+      $this->setstandings($category_id);
+    }
+    if($contestant_id) {
+      foreach ($this->standings[$category_id] as $contestant) {
+        if($contestant_id == $contestant->id) {
+          return $contestant;
+        }
       }
-      return $standings;
     } else {
-      $tmp = null;
-      $rank = 1;
-      foreach ($standings as $k => $v) {
-        $contestant = $standings[$k]['contestant'];
-        $contestant->total = $v['total'];
-        $contestant->remark = $v['total'];
-        $standings[$k] = $contestant;
-        $tmp = $standings[$k];
-      }
-      return $standings;
+      return $this->standings[$category_id];
     }
   }
 

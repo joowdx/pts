@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contestant extends Model
 {
     protected $fillable = [
-      'name', 'number', 'category_id',
+      'name', 'number', 'category_id', 'finalist',
     ];
 
     public function category() {

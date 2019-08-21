@@ -11,37 +11,39 @@
 <div id="vue" class="row">
   @forelse ($active->categories as $category)
     @if($judge->categories->contains($category->id))
-      @php
-        $scoring =  $category->scoring == 'rnk' ? 'Rank' : ($category->scoring == 'avg' ? 'Average' : ($category->scoring == 'pts' ? 'Points' : ''));
-      @endphp
       <div class="col-md-6 col-lg-6 col-sm-12 h-100" >
         <div class="table-responsive">
           <a href="{{ "/x/$judge->token/$judge->pin$$judge->id/$category->id" }}" class="text-dark nav-link m-0 p-2">
             <h5 class="m-0"><i class="fa-fw far fa-star"></i> {{ $category->name }}</h5>
           </a>
           <form action="">
-            <table class="table table-hover table-sm table-borderless @if($scoring == 'Rank') rank @endif">
+            <table class="table table-hover table-sm table-borderless">
               <thead class="bg-danger">
                 <tr>
-                  <th class="text-center" scope="col" width="10%">
+                  <th class="text-center" scope="col" width="15%">
                     <i class="fa-fw fas fa-hashtag"></i>
                   </th>
                   <th scope="col">
                     <i class="fa-fw far fa-user-alt"></i>
                     Name
                   </th>
-                  <th scope="col" width="30%" class="text-center">
+                  <th class="text-right" scope="col" width="18%">
                     <i class="fa-fw far fa-medal"></i>
-                    {{ $scoring }}
+                    Average
+                  </th>
+                  <th class="text-right" scope="col" width="15%">
+                    <i class="fa-fw far fa-medal"></i>
+                    Rank
                   </th>
                 </tr>
               </thead>
               <tbody>
-                @forelse ($judge->standings($category->id) as $contestant)
+                @forelse ($judge->getstandings($category->id) as $contestant)
                   <tr>
-                    <th class="text-center">{{ $contestant->number }}</th>
+                    <th class="text-center" style="padding-right:24px">{{ $contestant->number }}</th>
                     <td>{{ $contestant->name }}</td>
-                    <td class="text-center"> {{ $contestant->remark }} @if($category->scoring == 'avg') % @endif </td>
+                    <td class="text-right" style="padding-right:24px">{{ sprintf('%02.02f%%', $contestant->average) }}</td>
+                    <td class="text-right" style="padding-right:24px">{{ $contestant->rank }}</td>
                   </tr>
                 @empty
 

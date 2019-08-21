@@ -43,11 +43,6 @@
               @endforeach
             </select>
           </div>
-          @if($active != null)
-            <div class="input-group mb-2">
-              <button type="submit" class="btn btn-danger btn-block" name="delete">Delete active event</button>
-            </div>
-          @endif
         </div>
         <div class="input-group mb-2">
           <button type="submit" form="create" class="btn btn-danger btn-block">Set</button>
@@ -172,6 +167,9 @@
                       </td>
                     </tr>
                     @forelse ($category->subcategories as $subcategory)
+                      @if($subcategory->type == 'final')
+                        @continue;
+                      @endif
                       <tr>
                         <td>
                           <form action="{{ route('subcategory.update', $subcategory->id)}}" method="post">
@@ -202,6 +200,31 @@
                         <td> Subcategory is empty </td>
                       </tr>
                     @endforelse
+                    @if($category->eliminate)
+                      <tr>
+                        <td>
+                          <form action="{{ route('contestant.store') }}" method="post">
+                            @csrf
+                            <input type="hidden" name="category_id" value="{{ $category->id }}">
+                            <div class="input-group">
+                              <select class="form-control selectpicker show-tick" name="contestants[]" title="Override finalist" multiple>
+                                @foreach ($category->contestants as $contestant)
+                                  <option value="{{ $contestant->id }}" {{ $contestant->finalist ? 'selected' : '' }}>{{ $contestant->number }}</option>
+                                @endforeach
+                              </select>
+                              <div class="input-group-append">
+                                <button type="submit" class="btn btn-danger" name="override" value="true">
+                                  <i class="fa-fw far fa-pen-alt"></i>
+                                </button>
+                                <button type="submit" class="btn btn-danger" name="override" style="border-top-left-radius:0!important;border-bottom-left-radius:0!important">
+                                  <i class="fa-fw far fa-trash-alt"></i>
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </td>
+                      </tr>
+                    @endif
                   </tbody>
                 </table>
               </div>

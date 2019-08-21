@@ -9,16 +9,14 @@
 
 @section('content')
 <div id="vue" class="row">
-  @forelse ($category->subcategories as $subcategory)
-    @if($subcategory->id != @$final->id)
       <div class="col-md-6 col-lg-6 col-sm-12 h-100 mb-4" >
         <div class="table-responsive">
-          <h5>{{ $subcategory->name }} <small>({{ $subcategory->weight }}%)</small></h5>
+          <h5>{{ $final->name }}</h5>
           <table class="table table-hover table-sm table-borderless" style="margin:0!important">
-            <form id="subcategory->{{ $subcategory->id }}" action="{{ route('score.index') }}" method="post">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" form="subcategory->{{ $subcategory->id }}">
-                <input type="hidden" name="judge_id" value="{{ $judge->id }}" form="subcategory->{{ $subcategory->id }}">
-                <input type="hidden" name="subcategory_id" value="{{ $subcategory->id }}" form="subcategory->{{ $subcategory->id }}">
+            <form id="subcategory->{{ $final->id }}" action="{{ route('score.index') }}" method="post">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" form="subcategory->{{ $final->id }}">
+                <input type="hidden" name="judge_id" value="{{ $judge->id }}" form="subcategory->{{ $final->id }}">
+                <input type="hidden" name="subcategory_id" value="{{ $final->id }}" form="subcategory->{{ $final->id }}">
               </form>
             <thead class="bg-danger">
               <tr>
@@ -36,13 +34,13 @@
               </tr>
               <tbody>
             </thead>
-            @forelse ($category->contestants as $contestant)
+            @forelse ($category->finalists() as $contestant)
               <tr>
                 <th class="text-center align-middle">{{ $contestant->number }}</th>
                 <td class="align-middle">{{ $contestant->name }}</td>
-                <td data-order="{{ $judge->score($subcategory->id, $contestant->id)}}">
-                  <input type="hidden" name="contestant_id[]" form="subcategory->{{ $subcategory->id }}" value="{{ $contestant->id }}">
-                  <input type="text" class="form-control" placeholder="100" form="subcategory->{{ $subcategory->id }}" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');this.value=this.value>100?100:this.value" name="score[]" value="{{ $judge->score($subcategory->id, $contestant->id) }}">
+                <td data-order="{{ $judge->score($final->id, $contestant->id)}}">
+                  <input type="hidden" name="contestant_id[]" form="subcategory->{{ $final->id }}" value="{{ $contestant->id }}">
+                  <input type="text" class="form-control" placeholder="100" form="subcategory->{{ $final->id }}" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');this.value=this.value>100?100:this.value" name="score[]" value="{{ $judge->score($final->id, $contestant->id) }}">
                 </td>
               </tr>
             @empty
@@ -52,7 +50,7 @@
           </table>
           <tr>
             <td colspan="4">
-              <button type="submit" class="btn btn-danger btn-sm btn-block" style="border-radius:0;" form="subcategory->{{ $subcategory->id }}">
+              <button type="submit" class="btn btn-danger btn-sm btn-block" style="border-radius:0;" form="subcategory->{{ $final->id }}">
                 <i class="fa-fw far fa-save"></i>
                 Save
               </button>
@@ -60,10 +58,6 @@
           </tr>
         </div>
       </div>
-    @endif
-  @empty
-
-  @endforelse
 </div>
 @endsection
 

@@ -18,6 +18,7 @@ class CreateContestantsTable extends Migration
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('name');
             $table->string('number');
+            $table->boolean('finalist')->nullable();
             $table->timestamps();
             $table->foreign('category_id')->references('id')->on('categories')
                   ->onDelete('cascade')
