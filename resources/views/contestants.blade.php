@@ -96,7 +96,7 @@
               <tr>
                 <th width="10%"><i class="fa-fw far fa-hashtag"></i> No. </th>
                 <th width="40%"><i class="fa-fw far fa-gavel"></i> Name </th>
-                <th width="30%"><i class="fa-fw far fa-folder-open"></i>Category</th>
+                <th width="30%"><i class="fa-fw far fa-folder-open"></i>Activity</th>
                 <th width="15%" class=""><i class="fa-fw far fa-ticket-alt"></i> Action </th>
               </tr>
             </thead>
@@ -115,13 +115,13 @@
                     <td data-order="{{ $contestant->number }}"><input type="text" class="form-control" name="number" value="{{ $contestant->number }}" form="update-{{ $contestant->id }}"></td>
                     <td><input type="text" class="form-control" name="name" value="{{ $contestant->name }}" form="update-{{ $contestant->id }}"></td>
                     <td>
-                      <select class="form-control selectpicker show-tick" name="category_id" title="Category"  form="update-{{ $contestant->id }}">
+                      <select class="form-control selectpicker show-tick" name="category_id" title="Activity"  form="update-{{ $contestant->id }}">
                         @if($active)
                           @foreach($active->categories as $category)
                             <option value="{{ $category->id }}" @if($contestant->category_id == $category->id) selected @endif>{{ $category->name }}</option>
                           @endforeach
                         @else
-                          <option>No Categories Available</option>
+                          <option>No Activities Available</option>
                         @endif
                       </select>
                     </td>
@@ -159,7 +159,7 @@
               <tr>
                 <th width="10%"><i class="fa-fw far fa-hashtag"></i> No. </th>
                 <th width="40%"><i class="fa-fw far fa-gavel"></i> Name </th>
-                <th width="30%"><i class="fa-fw far fa-folder-open"></i>Category</th>
+                <th width="30%"><i class="fa-fw far fa-folder-open"></i>Activity</th>
                 <th width="15%" class=""><i class="fa-fw far fa-ticket-alt"></i> Action </th>
               </tr>
             </thead>

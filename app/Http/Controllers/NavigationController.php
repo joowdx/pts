@@ -226,7 +226,7 @@ class NavigationController extends Controller
       NavigationController::set($category->name, [
         'link' => false,
         'icon' => 'far fa-star',
-        'value' => ucfirst($category->name),
+        'value' => 'Categories',
       ]);
       return view('judge.category')->with([
         'active' => \App\Event::where('active', 1)->get()->first(),

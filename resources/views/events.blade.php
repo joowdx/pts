@@ -53,7 +53,7 @@
       <div>
         <h3 class="login-heading mb-4">
           <i class="fa-fw far fa-folders"></i>
-          Categories
+          Activities
         </h3>
         <div class="table-responsive">
           <table class="table table-sm table-borderless">
@@ -117,7 +117,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td> Category is empty </td>
+                    <td> Activity is empty </td>
                   </tr>
                 @endforelse
               @else
@@ -135,7 +135,7 @@
     <div class="col-sm-5 col-md-8">
       <h3 class="login-heading">
         <i class="fa-fw far fa-copy"></i>
-        Sub-categories
+        Categories
       </h3>
       <div class="row">
         @if ($active)

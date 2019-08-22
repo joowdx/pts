@@ -29,7 +29,7 @@
           </select>
         </div>
         <label>
-          <i class="fa-fw far fa-ticket-alt"></i>
+          <i class="fa-fw far fa-lock-alt"></i>
           My token is...
         </label>
         <div class="mb-3">
