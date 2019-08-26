@@ -56,7 +56,7 @@
           </tbody>
         </table>
       </div>
-      @if($category->eliminate)
+      {{-- @if($category->eliminate)
         @php
           $final = \App\Subcategory::where(['category_id' => $category->id, 'type' => 'final'])->get()->first();
         @endphp
@@ -89,7 +89,7 @@
             </tbody>
           </table>
         </div>
-      @endif
+      @endif --}}
       @foreach($category->subcategories as $subcategory)
         @if($subcategory->type == 'final')
           @continue
@@ -101,6 +101,9 @@
               <tr>
                 <th class="text-center"> Contestant </th>
                 @foreach ($judges as $judge)
+                  @if(!$judge->scored($subcategory->id))
+                    @continue
+                  @endif
                   <th>
                     Judge {{ $judge->number }}
                   </th>
@@ -114,9 +117,12 @@
                 <tr>
                   <th class="text-center"> # {{ $contestant->number }} </th>
                   @foreach ($judges as $judge)
+                    @if(!$judge->scored($subcategory->id))
+                      @continue
+                    @endif
                     <td> {{ sprintf('%02.02f%%', $judge->score($subcategory->id, $contestant->id)) }} </td>
                   @endforeach
-                  <td> {{ sprintf('%02.02f%%', $subcategory->getstandings($contestant->id)->average) }} </td>
+                  <td> {{ sprintf('%02.02f%%', $subcategory->getremark($contestant->id)) }} </td>
                   <th class="text-center"> {{ $subcategory->getstandings($contestant->id)->rank }} </th>
                 </tr>
               @endforeach
@@ -134,7 +140,8 @@
 $(() => {
   $('.table').DataTable({
     'dom': 'rt',
-    'order': [[{{ \App\Judge::count() }} + 2, 'asc']],
+    // 'order': [[{{ \App\Judge::count() }} + 2, 'asc']],
+    'pageLength': -1,
   })
   $('.dt-buttons.btn-group > button').addClass('btn-danger btn-sm')
 })

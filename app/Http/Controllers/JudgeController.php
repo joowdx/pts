@@ -20,7 +20,9 @@ class JudgeController extends Controller {
       }
       $count = $this->fixnumber();
       for($i = 1; $i <= $request->input('generate_count') && Judge::count() < 12; $i++) {
-        factory(Judge::class, $request->input('generate'))->create()->update(['number' => $i + $count]);
+        $judge = factory(Judge::class, $request->input('generate'))->create();
+        $judge->update(['number' => $i + $count]);
+        $judge->categories()->sync($request->input('category_id'));
       }
       return redirect()->back();
     }

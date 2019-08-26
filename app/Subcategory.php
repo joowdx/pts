@@ -9,11 +9,15 @@ class Subcategory extends Model {
   private $standings = [];
 
   protected $fillable = [
-    'name', 'weight', 'category_id', 'type',
+    'name', 'weight', 'category_id', 'type', 'finalized',
   ];
 
   public function category() {
     return $this->belongsTo(Category::class);
+  }
+
+  public function criteria() {
+    return $this->hasMany(Criterion::class);
   }
 
   public function scores() {
@@ -62,6 +66,22 @@ class Subcategory extends Model {
     } else {
       return $this->standings;
     }
+  }
+
+  public function getremark($contestant_id) {
+    return @\App\Score::where([
+      'contestant_id' => $contestant_id,
+      'subcategory_id' => $this->id,
+      'type' => 'sub',
+    ])->first()->score;
+  }
+
+  public function getrank($contestant_id) {
+    return @\App\Score::where([
+      'contestant_id' => $contestant_id,
+      'subcategory_id' => $this->id,
+      'type' => 'sub',
+    ])->first()->rank;
   }
 
 }

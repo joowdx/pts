@@ -18,9 +18,10 @@ class CategoryController extends Controller {
       $request->validate([
         'event_id' => 'required|string|min:1',
         'name' => 'required|string|min:3',
-        'eliminate' => 'nullable|string|numeric|not_in:0,1',
+        'eliminate' => 'nullable|string|numeric|min:2',
         'scoring' => 'nullable|string|in:avg,rnk,pts',
-        ]);
+        'score_by' => 'nullable|string|in:cat,crit,cont',
+      ]);
       $category = Category::create($request->all());
       if($request->has('eliminate') && $request->input('eliminate') > 1) {
         if(\App\Subcategory::where(['category_id' => $category->id, 'type' => 'final'])->get()->first()) {
@@ -48,7 +49,16 @@ class CategoryController extends Controller {
         'name' => 'required|string|min:3',
         'eliminate' => 'nullable|string|numeric|not_in:0,1',
         'scoring' => 'nullable|string|in:avg,rnk,pts',
+        'score_by' => 'nullable|string|in:cat,crit,cont',
       ]);
+      $category = \App\Category::find($id);
+      foreach($category->contestants as $contestant) {
+        if(@in_array(@$contestant->id, @$request->input('contestants'))) {
+          $contestant->update(['finalist' => true]);
+        } else {
+          $contestant->update(['finalist' => false]);
+        }
+      }
       $category = Category::find($id);
       $category->update($request->all());
       if($request->has('eliminate') && $request->input('eliminate') > 1) {

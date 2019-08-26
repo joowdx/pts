@@ -40,24 +40,10 @@ class ContestantController extends Controller
         }
         $count = $this->fixnumber();
         for($i = 1; $i <= $request->input('generate_count'); $i++) {
-          factory(Contestant::class, $request->input('generate'))->create()->update(['number' => $i + $count]);
+          factory(Contestant::class, $request->input('generate'))->create()->update(['number' => $i + $count, 'category_id' => $request->input('category_id')]);
         }
+        $this->fixnumber();
         return redirect()->back();
-      }
-      if($request->has('override')) {
-        if($request->input('override') == true) {
-          foreach(\App\Category::find($request->input('category_id'))->contestants as $contestant) {
-            if(in_array($contestant->id, $request->input('contestants'))) {
-              $contestant->update(['finalist' => true]);
-            } else {
-              $contestant->update(['finalist' => false]);
-            }
-          }
-        } else {
-          foreach(\App\Category::find($request->input('category_id'))->contestants as $contestant) {
-            $contestant->update(['finalist' => false]);
-          }
-        }
       }
       $request->validate([
         'category_id' => 'nullable|array|min:1',

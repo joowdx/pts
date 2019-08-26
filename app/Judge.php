@@ -25,11 +25,18 @@ class Judge extends Model {
     return $this->hasMany(Score::class);
   }
 
-  public function score($subcategory_id, $contestant_id) {
+  public function score($id, $contestant, $crit = null) {
+    if($crit) {
+      return @Score::where([
+        'judge_id' => $this->id,
+        'criterion_id' => $id,
+        'contestant_id' => $contestant
+      ])->get()->first()->score;
+    }
     return @Score::where([
       'judge_id' => $this->id,
-      'subcategory_id' => $subcategory_id,
-      'contestant_id' => $contestant_id
+      'subcategory_id' => $id,
+      'contestant_id' => $contestant
     ])->get()->first()->score;
   }
 
@@ -54,7 +61,7 @@ class Judge extends Model {
     foreach($category->contestants as $contestant) {
       $contestants[$contestant->number] = $contestant;
       foreach($category->subcategories as $subcategory) {
-        if($subcategory->type == 'final') {
+        if(!$this->scored($subcategory->id) || $subcategory->type == 'final') {
           continue;
         }
         $contestant->average += $this->score($subcategory->id, $contestant->id) * $subcategory->weight / ($totalweight ? $totalweight : 1);
@@ -90,4 +97,18 @@ class Judge extends Model {
     }
   }
 
+  public function scored($subcategory_id) {
+    return Score::where([
+      'judge_id' => $this->id,
+      'subcategory_id' => $subcategory_id,
+    ])->first() ? 1 : 0;
+  }
+
+  public function getrank($subcategory_id, $contestant_id) {
+    return @\App\Score::where([
+      'contestant_id' => $contestant_id,
+      'subcategory_id' => $this->id,
+      'type' => 'sub',
+    ])->first()->rank;
+  }
 }

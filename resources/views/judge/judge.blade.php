@@ -67,10 +67,12 @@ $(() => {
   $('table:not(.rank)').DataTable({
     'order': [[2, 'desc']],
     'dom':'dtr',
+    'pageLength': -1
   })
   $('.rank').DataTable({
     'order': [[2, 'asc']],
     'dom':'dtr',
+    'pageLength': -1
   })
 })
 </script>

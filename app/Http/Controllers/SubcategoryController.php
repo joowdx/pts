@@ -34,6 +34,36 @@ class SubcategoryController extends Controller {
 
   public function update(Request $request, $id) {
     $subcategory = Subcategory::find($id);
+    if($request->has('criteria')) {
+      for ($i=0; $i < count($request->input('criterion_name')); $i++) {
+        if(@$request->input('criterion_id')[$i]) {
+          if($request->input('criterion_name')[$i] && $request->input('criterion_weight')) {
+            if(!ctype_digit($request->input('criterion_weight')[$i])) {
+              continue;
+            }
+            @\App\Criterion::find($request->input('criterion_id')[$i])->update([
+              'name' => $request->input('criterion_name')[$i],
+              'weight' => $request->input('criterion_weight')[$i]
+            ]);
+          }
+          else {
+            @\App\Criterion::find($request->input('criterion_id')[$i])->delete();
+          }
+        } else {
+          if($request->input('criterion_name')[$i] && $request->input('criterion_weight') && ctype_digit($request->input('criterion_weight')[$i])) {
+            \App\Criterion::create(['subcategory_id' => $id])->update([
+              'name' => $request->input('criterion_name')[$i],
+              'weight' => $request->input('criterion_weight')[$i],
+            ]);
+          }
+        }
+      }
+    } else if($request->has('clear')) {
+      foreach($subcategory->criteria as $criterion) {
+        $criterion->delete();
+      }
+      return redirect()->back();
+    }
     if($request->has('delete')) {
       $subcategory->delete();
       return redirect()->back();

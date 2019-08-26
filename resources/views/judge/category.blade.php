@@ -18,7 +18,13 @@
     @if($subcategory->id != @$final->id)
       <div class="col-md-6 col-lg-6 col-sm-12 h-100 mb-4" >
         <div class="table-responsive">
-          <h5>{{ $subcategory->name }} <small>({{ $subcategory->weight }}%)</small></h5>
+          @if($category->score_by == 'crit')
+            <a href="{{ "/x/$judge->token/$judge->pin$$judge->id/$category->id/$subcategory->id" }}" class="text-dark nav-link m-0 p-2">
+              <h5>{{ $subcategory->name }} <small>({{ $subcategory->weight }}%)</small></h5>
+            </a>
+          @else
+            <h5>{{ $subcategory->name }} <small>({{ $subcategory->weight }}%)</small></h5>
+          @endif
           <table class="table table-hover table-sm table-borderless" style="margin:0!important">
             <form id="subcategory->{{ $subcategory->id }}" action="{{ route('score.index') }}" method="post">
               <input type="hidden" name="_token" value="{{ csrf_token() }}" form="subcategory->{{ $subcategory->id }}">
@@ -46,8 +52,8 @@
                   <th class="text-center align-middle">{{ $contestant->number }}</th>
                   <td class="align-middle">{{ $contestant->name }}</td>
                   <td data-order="{{ $judge->score($subcategory->id, $contestant->id)}}">
-                    @if($category->finalized)
-                      {{ $judge->score($subcategory->id, $contestant->id) }}
+                    @if($category->finalized || $category->score_by == 'crit')
+                      {{ sprintf('%02.02f%%', $judge->score($subcategory->id, $contestant->id)) }}
                     @else
                       <input type="hidden" name="contestant_id[]" form="subcategory->{{ $subcategory->id }}" value="{{ $contestant->id }}">
                       <input type="text" class="form-control" placeholder="100" form="subcategory->{{ $subcategory->id }}" maxlength="3" oninput="this.value=this.value.replace(/[^0-9]/g,'');this.value=this.value>100?100:this.value" name="score[]" value="{{ $judge->score($subcategory->id, $contestant->id) }}">
@@ -58,7 +64,7 @@
               @endforelse
             </tbody>
           </table>
-          @if(!$category->finalized)
+          @if(!$category->finalized && !$category->score_by == 'crit')
             <button type="submit" class="btn btn-danger btn-sm btn-block" style="border-radius:0;" form="subcategory->{{ $subcategory->id }}">
               <i class="fa-fw far fa-save"></i>
               Save
@@ -82,6 +88,7 @@ $(() => {
     @if($category->finalized)
       'order': [[2, 'desc']],
     @endif
+    'pageLength': -1
   })
 })
 </script>

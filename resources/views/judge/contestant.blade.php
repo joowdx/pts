@@ -72,7 +72,7 @@
 @section('scripts')
 <script>
 $(() => {
-  $('table').DataTable({'dom':'dtr',});
+  $('table').DataTable({'dom':'dtr','pageLength': -1});
 })
 </script>
 @endsection

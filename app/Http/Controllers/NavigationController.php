@@ -228,7 +228,7 @@ class NavigationController extends Controller
         'icon' => 'far fa-star',
         'value' => 'Categories',
       ]);
-      return view('judge.category')->with([
+      return view($category->score_by == 'crit' ? 'judge.category' : 'judge.contestant')->with([
         'active' => \App\Event::where('active', 1)->get()->first(),
         'judge' => $judge,
         'category' => \App\Category::find($c),
@@ -236,6 +236,7 @@ class NavigationController extends Controller
       ]);
     }
   }
+
   public function xcf($t, $j, $c) {
     $judge = \App\Judge::find(@explode('$',$j)[1]);
     if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
@@ -261,4 +262,29 @@ class NavigationController extends Controller
       ]);
     }
   }
+
+  public function xcc ($t, $j, $c, $s) {
+    $judge = \App\Judge::find(@explode('$',$j)[1]);
+    if($judge==null||$judge->token!=$t||$judge->pin!=@explode('$',$j)[0]) {
+      return redirect('/x');
+    } else if(!\App\Category::find($c) || !$judge->categories->contains($c)) {
+      return abort(404);
+    } else {
+      $category = \App\Category::find($c);
+      $subcategory = \App\Subcategory::find($s);
+      NavigationController::set($category->name,[
+        'link' => "/x/$judge->token/$judge->pin$$judge->id/$category->id",
+        'icon' => 'far fa-star',
+        'value' => $subcategory->name,
+      ]);
+      return view('judge.criterion')->with([
+        'active' => \App\Event::where('active', 1)->get()->first(),
+        'judge' => $judge,
+        'category' => $category,
+        'subcategory' => $subcategory,
+        'contestants' => $category->contestants,
+      ]);
+    }
+  }
+
 }

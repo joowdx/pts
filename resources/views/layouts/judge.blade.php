@@ -98,7 +98,7 @@
                         </li>
                         @foreach (Navigation::crumbs() as $crumb)
                           <li>
-                            <a href="{{ $crumb->link && !$loop->last ? $crumb->link : 'javascript:void(0)' }}" {{ $loop->last ? 'class=bg-danger' : '' }}>
+                            <a href="{{ $crumb->link ? $crumb->link : 'javascript:void(0)' }}" {{ $loop->last ? 'class=bg-danger' : '' }}>
                               <i class="{{ $crumb->icon }}" aria-hidden="true"></i>
                               {{ $crumb->value }}
                             </a>
@@ -116,6 +116,7 @@
             @yield('content')
           </div>
         </div>
+        {!! print_r(Navigation::crumbs()) !!}
       </div>
       <footer class="main-footer">
         <strong>Copyright <i class="far fa-copyright"></i> 2019 <a href="/">PGITS</a>.</strong> All rights reserved.

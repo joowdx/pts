@@ -18,8 +18,8 @@ class CreateCategoriesTable extends Migration
             $table->unsignedBigInteger('event_id');
             $table->string('name');
             $table->enum('scoring', ['avg', 'rnk', 'pts'])->nullable();
+            $table->enum('score_by', ['crit', 'cat', 'cont'])->nullable();
             $table->string('eliminate')->nullable();
-            $table->boolean('finalized')->nullable();
             $table->timestamps();
             $table->foreign('event_id')->references('id')->on('events')
                   ->onDelete('cascade')

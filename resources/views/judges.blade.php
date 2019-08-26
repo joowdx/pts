@@ -85,6 +85,20 @@
             <span class="fa-fw far fa-tally"></span>
           </div>
         </div>
+        <div class="input-group mb-3">
+          <select class="form-control selectpicker show-tick" name="category_id[]" title="Activity" multiple>
+            @if($active)
+              @foreach($active->categories as $category)
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
+              @endforeach
+            @else
+              <option>No Activities Available</option>
+            @endif
+          </select>
+          <div class="input-group-append input-group-text">
+            <span class="fa-fw far fa-star"></span>
+          </div>
+        </div>
         <div class="input-group mb-2">
           <button class="btn btn-danger btn-block" type="submit" name="generate">Generate</button>
         </div>

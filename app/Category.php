@@ -11,7 +11,7 @@ use App\Subcategory;
 class Category extends Model
 {
   protected $fillable = [
-    'event_id', 'name', 'eliminate', 'scoring',
+    'event_id', 'name', 'eliminate', 'scoring', 'score_by',
   ];
 
   public function judges() {
@@ -43,6 +43,7 @@ class Category extends Model
     $contestants = [];
     foreach($this->contestants as $contestant) {
       $contestants[$contestant->number] = $contestant;
+      $judge_count = 0;
       foreach($this->judges as $judge) {
         $contestants[$contestant->number]->average += $judge->getstandings($this->id, $contestant->id)->average;
       }

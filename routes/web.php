@@ -34,8 +34,9 @@ Route::get('/x', 'NavigationController@x');
 Route::get('/x/{j}', 'NavigationController@xj');
 Route::get('/x/{t}/{j}', 'NavigationController@xt');
 Route::get('/x/{t}/{j}/{c}', 'NavigationController@xc');
+Route::get('/x/{t}/{j}/{c}/{s}', 'NavigationController@xcc');
 Route::get('/x/{t}/{j}/{c}/f', 'NavigationController@xcf');
 
 Route::get('/test/{id}', function($id) {
-  return \App\Category::find(1)->standings(1);
+  return \App\Judge::find(2)->getstandings(1);
 });
