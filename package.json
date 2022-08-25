@@ -13,7 +13,7 @@
     "@types/jquery": "^3.3.30",
     "admin-lte": "3.0.0-beta.1",
     "animate.css": "^3.7.2",
-    "axios": "^0.18",
+    "axios": "^0.21",
     "bootstrap": "^4.1.0",
     "bootstrap-select": "^1.13.10",
     "cross-env": "^5.1",
